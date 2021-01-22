@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <record id="partner_base_ext_form_view" model="ir.ui.view">
+        <field name="name">res.partner.form</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//page[@name='sales_purchases']" position="after">
+                <!--<page name="purchase_detail" string="Purchase" attrs="{'invisible': [('supplier', '=', False)]}">-->
+                <page name="purchase_detail" string="Purchase" invisible="1" >
+                    <field name="purchasedetail_vendor_ids" >
+                            <tree string="Supplier Information">
+
+                                        <field name="sequence"/>
+                                        <field name="date"/>
+                                        <field name="product_id"/>
+                                        <field name="product_quantity"/>
+                                        <field name="price" string="Latest Rate"/>
+                                        <field name="price_diff" />
+
+                                    </tree>
+                    </field>
+
+                </page>
+                <page name="sale_detail" string="Sale" attrs="{'invisible': [('customer', '=', False)]}">
+
+                    <field name="saledetail_customer_ids" context="{'default_customer_partner_id':context.get('id','active_id')}">
+
+
+                    <tree string="Customer Information">
+                        <field name="customer_partner_id"/>
+
+                                        <field name="sequence"/>
+                                        <field name="additional_info"/>
+                                        <field name="item_code"/>
+                                        <field name="date"/>
+                                        <field name="product_id"/>
+                                        <field name="product_quantity"/>
+                                        <field name="price" string="Latest Rate"/>
+                                        <field name="price_diff" />
+
+                                    </tree>
+                    </field>
+
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

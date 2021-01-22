@@ -1,0 +1,1249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <!--    Piyush: code for Email Description Menu in the settings==========================================-->
+
+        <record id="view_email_description_form" model="ir.ui.view">
+            <field name="name">email.description.form</field>
+            <field name="model">email.description</field>
+            <field name="arch" type="xml">
+                <form string="Email Description Details">
+                    <group col="4" colspan="4">
+                        <field name="migrate_data"/>
+                        <field name="reference_id"/>
+                        <field name="name"/>
+                        <field name="subject"/>
+                        <field name="email_description"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_email_description_tree" model="ir.ui.view">
+            <field name="name">email.description.tree</field>
+            <field name="model">email.description</field>
+            <field name="arch" type="xml">
+                <tree string="Email Description Details">
+                    <field name="name"/>
+                    <field name="subject"/>
+                    <field name="email_description"/>
+                    <field name="migrate_data" string="Migrate Data"/>
+                    <field name="reference_id" string="Reference Id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_email_description_form" model="ir.actions.act_window">
+            <field name="name">Email Description</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">email.description</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help">Create and manage the email description details that will be managed by Odoo from here.</field>
+        </record>
+
+    <menuitem name="Email Description" action="action_email_description_form" id="menu_action_email_description_form"
+              parent="base.menu_users" sequence="8"/>
+
+    <!--    Piyush: code for Email Template Menu in the inventory under settings ends here-->
+
+
+
+    <!--    Piyush: code for User Custom Measure Master Menu in the inventory under product > product category-->
+
+        <record id="view_user_custom_measures_master_form" model="ir.ui.view">
+            <field name="name">user.custom.measures.master.form</field>
+            <field name="model">user.custom.measures.master</field>
+            <field name="arch" type="xml">
+                <form string="User Custom Measure Master Details">
+                    <group col="4" colspan="4">
+                        <field name="migrate_data" string="Migrate Data"/>
+                        <field name="reference_id" string="Reference Id"/>
+                        <field name="user_custom_size_name"/>
+                        <field name="customer_id"/>
+                        <field name="age_id"/>
+                        <field name="associated_company"/>
+                        <field name="status"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_user_custom_measures_master_tree" model="ir.ui.view">
+            <field name="name">user.custom.measures.master.tree</field>
+            <field name="model">user.custom.measures.master</field>
+            <field name="arch" type="xml">
+                <tree string="User Custom Measure Master Details">
+                    <field name="user_custom_size_name"/>
+                        <field name="customer_id"/>
+                        <field name="age_id"/>
+                        <field name="associated_company"/>
+                        <field name="status"/>
+                        <field name="migrate_data" string="Migrate Data"/>
+                        <field name="reference_id" string="Reference Id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_user_custom_measures_master_form" model="ir.actions.act_window">
+            <field name="name">User Custom Measures Master</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">user.custom.measures.master</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help">Create and manage the user custom measures master details that will be managed by Odoo from here.</field>
+        </record>
+
+    <menuitem name="User Custom Measures Master" action="action_user_custom_measures_master_form" id="menu_action_user_custom_measures_master_form"
+              parent="stock.menu_product_in_config_stock" sequence="7"/>
+
+    <!--    Piyush: code for user_custom_measures_master Menu in the inventory under product > product category ends here-->
+
+
+
+    <!--    Piyush: code for Inheriting Product uom fields -->
+
+    <record id="product_uom_inherit_view" model="ir.ui.view">
+        <field name="name">product.uom.inherit</field>
+        <field name="model">product.uom</field>
+        <field name="inherit_id" ref="product.product_uom_form_view"/>
+        <field name="arch" type="xml">
+            <field name="name" position="before">
+                <field name="migrate_data"/>
+                <field name="reference_id"/>
+            </field>
+        </field>
+    </record>
+
+    <!--    Piyush: code for Inheriting Product uom fields ends here -->
+
+
+    <!--    Piyush: code for Inheriting Product uom Category fields -->
+
+    <record id="product_uom_category_inherit_view" model="ir.ui.view">
+        <field name="name">product.uom.categ.inherit</field>
+        <field name="model">product.uom.categ</field>
+        <field name="inherit_id" ref="product.product_uom_categ_form_view"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="migrate_data" invisible="1"/>
+                <field name="reference_id" invisible="1"/>
+            </field>
+        </field>
+    </record>
+
+    <!--    Piyush: code for Inheriting Product uom Category fields ends here -->
+
+
+        <!--Piyush: code for creating view of Coupons in settings after images menu on 01-10-2020-->
+
+    <record id="view_coupons_form" model="ir.ui.view">
+            <field name="name">Coupons Form</field>
+            <field name="model">available.coupons</field>
+            <field name="arch" type="xml">
+                <form string="Coupon Details">
+                    <group col="4">
+                        <field name="migrate_data" />
+                        <field name="reference_id" />
+                        <field name="name" />
+                        <field name="coupon_description" />
+                        <field name="valid_from" />
+                        <field name="limit_number"/>
+                        <field name="valid_to" />
+                        <field name="minimum_amount" />
+                        <field name="status" />
+                        <field name="company_id" />
+                    </group>
+                    <hr/><hr/>
+                    <group col="4" >
+                        <field name="coupon_type" widget="radio" force_save="1"/>
+                        <field name="allowed_users" widget="radio" force_save="1"/>
+                        <field name="coupon_value"/>
+                        <field name="partner_ids" widget="many2many_tags" attrs="{'invisible': [('allowed_users', '=', 'all')]}"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_coupons_tree" model="ir.ui.view">
+            <field name="name">Coupons Tree</field>
+            <field name="model">available.coupons</field>
+            <field name="arch" type="xml">
+                <tree string="Available Coupons Details">
+                    <field name="name" />
+                    <field name="coupon_type" />
+                    <field name="coupon_value" />
+                    <field name="valid_from" />
+                    <field name="valid_to" />
+                    <field name="limit_number" />
+                    <field name="minimum_amount" />
+                    <field name="company_id" />
+                    <field name="status" />
+                </tree>
+            </field>
+        </record>
+
+
+<!--    <record id="action_coupons_tree" model="ir.actions.act_window">-->
+<!--            <field name="name">Coupons Form</field>-->
+<!--            <field name="type">ir.actions.act_window</field>-->
+<!--            <field name="res_model">available.coupons</field>-->
+<!--            <field name="view_type">form</field>-->
+<!--            <field name="view_mode">tree,form</field>-->
+<!--        </record>-->
+
+        <record id="action_coupons_form" model="ir.actions.act_window">
+            <field name="name">Coupons</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">available.coupons</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help">Create and manage the available coupon details that will be managed by Odoo from here.</field>
+        </record>
+
+    <menuitem name="Available Coupons" action="action_coupons_form" id="menu_action_coupons_form" parent="base.menu_users"/>
+
+    <!--Piyush: code for creating view of User db details in settings after images menu on 01-10-2020 ends here-->
+
+
+     <!--Piyush: code for creating view of User WishList in settings after images menu on 15-09-2020-->
+
+    <record id="view_db_details_form" model="ir.ui.view">
+            <field name="name">Database Details Form</field>
+            <field name="model">db.details</field>
+            <field name="arch" type="xml">
+                <form string="Database Details">
+                    <header>
+                        <button name="migrate_all_data" attrs="{'invisible': [('migration_required', '=', True)]}" string="Migrate All" type="object" class="oe_highlight"/>
+                        <button name="fetch_all_data" attrs="{'invisible': [('migration_required', '=', True)]}" string="Fetch data" type="object" class="oe_highlight"/>
+                    </header>
+                    <group>
+                        <field name="application"/>
+                        <field name="migrate_data" attrs="{'invisible': [('migration_required', '=', True)]}"/>
+                    </group>
+                    <group col="4" colspan="4">
+                        <field name="ip_address"/>
+                        <field name="port"/>
+                        <field name="db_name" attrs="{'invisible': [('migration_required', '=', True)]}"/>
+                        <field name="migration_required" invisible="1"/>
+                    </group>
+                    <group col="4" colspan="4">
+<!--                        <field name="company_id" invisible="1"/>-->
+                        <field name="username"  attrs="{'invisible': [('migration_required', '=', True)]}"/>
+                        <field name="password" attrs="{'invisible': [('migration_required', '=', True)]}"/>
+                    </group>
+
+                </form>
+            </field>
+        </record>
+
+        <record id="view_db_details_tree" model="ir.ui.view">
+            <field name="name">Database Details Tree</field>
+            <field name="model">db.details</field>
+            <field name="arch" type="xml">
+                <tree string="Database Details">
+                    <field name="db_name" />
+                    <field name="port" />
+                    <field name="ip_address" />
+<!--                    <field name="company_id" invisible="1"/>-->
+                    <field name="username" />
+                    <field name="password" />
+                </tree>
+            </field>
+        </record>
+
+
+    <record id="action_db_details_tree" model="ir.actions.act_window">
+            <field name="name">Database Details Tree</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">db.details</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="action_db_details_form" model="ir.actions.act_window">
+            <field name="name">Database Details Form</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">db.details</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help">Create and manage the customer db details that will be managed by Odoo from here.</field>
+        </record>
+
+    <menuitem name="Database Details" action="action_db_details_form" id="menu_action_db_details_form" parent="base.menu_users"/>
+
+    <!--Piyush: code for creating view of User db details in settings after images menu on 23-09-2020 ends here-->
+
+
+    <!--Piyush: code for creating view of User WishList in settings after images menu on 15-09-2020-->
+
+    <record id="view_wishlist_form" model="ir.ui.view">
+            <field name="name">Wishlist Form</field>
+            <field name="model">customer.wishlist</field>
+            <field name="arch" type="xml">
+                <form string="Customer WishList">
+                    <group>
+                        <field name="customer_id" />
+                        <field name="product_id" />
+                    </group>
+                    <group>
+                        <field name="migrate_data" />
+                        <field name="reference_id" />
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_wishlist_tree" model="ir.ui.view">
+            <field name="name">Wishlist Tree</field>
+            <field name="model">customer.wishlist</field>
+            <field name="arch" type="xml">
+                <tree string="Wishlist">
+                    <field name="customer_id" />
+                    <field name="product_id" />
+                    <field name="create_date" />
+                    <field name="migrate_data" invisible="1"/>
+                    <field name="reference_id" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+
+
+    <record id="action_cart_tree" model="ir.actions.act_window">
+            <field name="name">WishList Tree</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">customer.wishlist</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="action_wishlist_form" model="ir.actions.act_window">
+            <field name="name">WishList Form</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">customer.wishlist</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help">Create and manage the customer wishlist that will be managed by Odoo from here.</field>
+        </record>
+
+    <menuitem name="Customer Wishlist" action="action_wishlist_form" id="menu_action_wishlist_form" parent="base.menu_users"/>
+
+    <!--Piyush: code for creating view of User WishList in settings after images menu on 15-09-2020 ends here-->
+
+
+
+    <!--Piyush: code for creating view of User Cart in settings after images menu on 15-09-2020-->
+
+    <record id="view_cart_form" model="ir.ui.view">
+            <field name="name">Cart</field>
+            <field name="model">customer.cart</field>
+            <field name="arch" type="xml">
+                <form string="Customer Cart">
+                    <group>
+                        <field name="customer_id" />
+                        <field name="product_id" />
+                        <field name="prod_color" />
+                        <field name="product_age" />
+                        <field name="user_custom_size_master" />
+                    </group>
+                    <group>
+                        <field name="quantity" />
+                        <field name="total_price" />
+                        <field name="migrate_data" />
+                        <field name="reference_id" />
+                        <field name="ordered" />
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_cart_tree" model="ir.ui.view">
+            <field name="name">Cart</field>
+            <field name="model">customer.cart</field>
+            <field name="arch" type="xml">
+                <tree string="Cart">
+                    <field name="customer_id" />
+                    <field name="product_id" />
+                    <field name="prod_color" />
+                    <field name="product_age" />
+                    <field name="user_custom_size_master" />
+                    <field name="quantity" />
+                    <field name="total_price" />
+                    <field name="migrate_data" />
+                    <field name="reference_id" />
+                    <field name="ordered" />
+                    <field name="create_date" />
+                </tree>
+            </field>
+        </record>
+
+
+    <record id="action_cart_tree" model="ir.actions.act_window">
+            <field name="name">Cart Tree</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">customer.cart</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="action_cart_form" model="ir.actions.act_window">
+            <field name="name">Cart Form</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">customer.cart</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help">Create and manage the customer cart that will be managed by Odoo from here.</field>
+        </record>
+
+    <menuitem name="Customer Cart" action="action_cart_form" id="menu_action_cart_form" parent="base.menu_users"/>
+
+    <!--Piyush: code for creating view of User Cart in settings after images menu on 15-09-2020 ends here-->
+
+
+    <!--Piyush: code for multiple images-->
+    <record id="view_image_form" model="ir.ui.view">
+            <field name="name">Images</field>
+            <field name="model">multiple.images</field>
+            <field name="arch" type="xml">
+                <form string="Multiple Images">
+                    <group>
+                        <field name="product_id" invisible="1"/>
+                    </group>
+                    <seprator/>
+                    <group col="3">
+                        <group col="3">
+                            <field name="image" widget="image"/>
+                        </group>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_image_tree" model="ir.ui.view">
+            <field name="name">Images</field>
+            <field name="model">multiple.images</field>
+            <field name="arch" type="xml">
+                <tree string="Images">
+                    <field name="product_id" invisible="1"/>
+                    <field name="image" widget="image"/>
+                </tree>
+            </field>
+        </record>
+
+
+    <record id="action_image_tree" model="ir.actions.act_window">
+            <field name="name">imageTree</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">multiple.images</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="action_image_form" model="ir.actions.act_window">
+            <field name="name">Image Form</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">multiple.images</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help">Create and manage the multiple images for a particular product that will be managed by Odoo from here.</field>
+        </record>
+
+    <menuitem name="Images" action="action_image_form" id="menu_action_image_form" parent="base.menu_users"/>
+
+
+<!--    Piyush: code for Inheriting company fields -->
+
+
+    <record id="company_ecom_inherit_view" model="ir.ui.view">
+        <field name="name">company.ecom.inherit</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form"/>
+        <field name="arch" type="xml">
+            <field name="partner_id" position="after">
+                <field name="ecom_company" options="{'no_create': True, 'no_open': True}"/>
+                <field name="migrate_data"/>
+                <field name="reference_id"/>
+            </field>
+        </field>
+    </record>
+
+    <!--    Piyush: code for Inheriting company fields ends here -->
+
+
+    <!--    Piyush: code for Inheriting Product Category fields -->
+
+    <record id="product_category_ecom_inherit_view" model="ir.ui.view">
+        <field name="name">product.category.ecom.inherit</field>
+        <field name="model">product.category</field>
+        <field name="inherit_id" ref="product.product_category_form_view"/>
+        <field name="arch" type="xml">
+            <field name="name" position="before">
+                <field name="image" widget="image" class="oe_avatar"/>
+<!--                <field name="image" widget="image" class="oe_avatar" attrs="{'required': [('image_check', '=', True)]}"/>-->
+            </field>
+                <field name="parent_id" position="before">
+                    <field name="reference_id" readonly="1"/>
+                    <field name="migrate_data"/>
+                    <field name="invisible_flag"/>
+            </field>
+        </field>
+    </record>
+
+    <!--    Piyush: code for Inheriting Product Category fields ends here -->
+
+
+<!--    Piyush: code for Inheriting users fields -->
+
+
+    <record id="users_ecom_inherit_view" model="ir.ui.view">
+        <field name="name">users.ecom.inherit</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <field name="company_ids" position="before">
+                <field name="reference_id"/>
+                <field name="migrate_data"/>
+            </field>
+        </field>
+    </record>
+
+    <!--    Piyush: code for Inheriting users fields ends here -->
+
+
+    <!--    Piyush: code for Inheriting Product fields -->
+
+    <record id="product_ecom_inherit_view" model="ir.ui.view">
+        <field name="name">product.ecom.inherit</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+
+            <field name="type" position="before">
+                <field name="migrate_data"/>
+                <field name="ecommerce_check" invisible="1"/>
+            </field>
+
+
+            <xpath expr="//page[@name='notes']" position="after">
+               <page name="migrate_info" string="Ecommerce" >
+                    <separator string="Ecom Integration"/>
+                    <form>
+                        <group col="2" colspan="4">
+                            <field name="reference_id" readonly="1"/>
+                        </group>
+                        <group col="4">
+                            <field name="category_ids" widget="many2many_tags"/>
+                            <field name="care_instruction_id"/>
+                            <field name="age_ids" widget="many2many_tags"/>
+                            <field name="color_ids" widget="many2many_tags"/>
+                            <field name="product_fabric_id"/>
+                            <field name="discount_price" string="Price After Discount"/>
+                            <field name="related_products" widget="many2many_tags"/>
+                            <field name="mrp_data"/>
+                            <field name="mrp_discounted_data"/>
+                            <!--Jatin added shiiping charges field-->
+                            <field name="shipping_charge"/>
+                        </group>
+                    </form>
+               </page>
+               <page name="multiple_images" string="Related Images" attrs="{'invisible': [('ecommerce_check', '=', False)]}">
+                    <separator string="Related Images"/>
+                    <form>
+                        <field name="image_ids" force_save="1" attrs="{'required': [('migrate_data', '=', True)]}">
+                        </field>
+                    </form>
+
+               </page>
+             </xpath>
+        </field>
+    </record>
+
+
+    <!--    Piyush: code for Inheriting users fields ends here -->
+
+
+<!--    Piyush: code for Care Instructions Menu in the inventory under product > product category-->
+
+        <record id="view_care_instruction_form" model="ir.ui.view">
+            <field name="name">care.instruction.form</field>
+            <field name="model">care.instruction</field>
+            <field name="arch" type="xml">
+                <form string="care instructions details">
+                    <group col="4" colspan="4">
+                        <field name="migrate_data" string="Migrate Data"/>
+                        <field name="reference_id" string="Reference Id"/>
+                        <field name="name"/>
+                        <field name="status"/>
+                        <field name="company_id"/>
+                    </group>
+                    <group col="2">
+                        <field name="care_details"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_care_instruction_tree" model="ir.ui.view">
+            <field name="name">care.instruction.tree</field>
+            <field name="model">care.instruction</field>
+            <field name="arch" type="xml">
+                <tree string="Care Instructions">
+                    <field name="name"/>
+                    <field name="company_id"/>
+                    <field name="reference_id"/>
+                    <field name="status"/>
+                </tree>
+            </field>
+        </record>
+
+
+    <record id="action_care_instruction_tree" model="ir.actions.act_window">
+            <field name="name">careInstructionTree</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">care.instruction</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="action_care_instruction_form" model="ir.actions.act_window">
+            <field name="name">Care Instruction Form</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">care.instruction</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help">Create and manage the database details that will be managed by Odoo from here.</field>
+        </record>
+
+    <menuitem name="Care Instruction" action="action_care_instruction_form" id="menu_action_care_instruction_form"
+              parent="stock.menu_product_in_config_stock" sequence="5"/>
+
+    <!--    Piyush: code for Care Instructions Menu in the inventory under product > product category ends here-->
+
+
+    <!--    Piyush: code for product fabric Menu in the inventory under product > product category-->
+
+        <record id="view_product_fabric_form" model="ir.ui.view">
+            <field name="name">product.fabric.form</field>
+            <field name="model">product.fabric</field>
+            <field name="arch" type="xml">
+                <form string="product fabric details">
+                    <group col="4" colspan="4">
+                        <field name="migrate_data" string="Migrate Data"/>
+                        <field name="reference_id" string="Reference Id"/>
+                        <field name="name"/>
+                        <field name="status"/>
+                        <field name="company_id"/>
+                    </group>
+                    <group col="2">
+                        <field name="fabric_details"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_product_fabric_tree" model="ir.ui.view">
+            <field name="name">product.fabric.tree</field>
+            <field name="model">product.fabric</field>
+            <field name="arch" type="xml">
+                <tree string="product fabric">
+                    <field name="name"/>
+                    <field name="migrate_data"/>
+                    <field name="company_id"/>
+                    <field name="status"/>
+                    <field name="reference_id"/>
+                </tree>
+            </field>
+        </record>
+
+
+    <record id="action_product_fabric_tree" model="ir.actions.act_window">
+            <field name="name">productFabricTree</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.fabric</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="action_product_fabric_form" model="ir.actions.act_window">
+            <field name="name">Product Fabric Form</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.fabric</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help">Create and manage the product fabric details that will be managed by Odoo from here.</field>
+        </record>
+
+    <menuitem name="Fabric" action="action_product_fabric_form" id="menu_action_product_fabric_form"
+              parent="stock.menu_product_in_config_stock" sequence="5"/>
+
+    <!--    Piyush: code for product fabric Menu in the inventory under product > product category ends here-->
+
+
+    <!--    Piyush: code for age Menu in the inventory under product > product category-->
+
+        <record id="view_age_form" model="ir.ui.view">
+            <field name="name">age.form</field>
+            <field name="model">age</field>
+            <field name="arch" type="xml">
+                <form string="age details">
+                    <group col="4" colspan="4">
+                        <field name="migrate_data" string="Migrate Data"/>
+                        <field name="reference_id" string="Reference Id"/>
+                        <field name="name"/>
+                        <field name="status"/>
+                        <field name="company_id"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_age_tree" model="ir.ui.view">
+            <field name="name">age.tree</field>
+            <field name="model">age</field>
+            <field name="arch" type="xml">
+                <tree string="age">
+                    <field name="name"/>
+                    <field name="company_id"/>
+                    <field name="migrate_data"/>
+                    <field name="status"/>
+                    <field name="reference_id"/>
+                </tree>
+            </field>
+        </record>
+
+
+    <record id="action_age_tree" model="ir.actions.act_window">
+            <field name="name">ageTree</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">age</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="action_age_form" model="ir.actions.act_window">
+            <field name="name">Age Form</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">age</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help">Create and manage the age details that will be managed by Odoo from here.</field>
+        </record>
+
+    <menuitem name="Age" action="action_age_form" id="menu_action_age_form"
+              parent="stock.menu_product_in_config_stock" sequence="5"/>
+
+    <!--    Piyush: code for age Menu in the inventory under product > product category ends here-->
+
+
+    <!--    Piyush: code for color Menu in the inventory under product > product category-->
+
+        <record id="view_color_form" model="ir.ui.view">
+            <field name="name">color.form</field>
+            <field name="model">color</field>
+            <field name="arch" type="xml">
+                <form string="color details">
+                    <group col="4" colspan="4">
+                        <field name="migrate_data" string="Migrate Data"/>
+                        <field name="reference_id" string="Reference Id"/>
+                        <field name="name"/>
+                        <field name="color_name" widget="color" options="{'readonly_mode': 'default'}"/>
+                        <field name="status"/>
+                        <field name="company_id"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_color_tree" model="ir.ui.view">
+            <field name="name">color.tree</field>
+            <field name="model">color</field>
+            <field name="arch" type="xml">
+                <tree string="color">
+                    <field name="name"/>
+                    <field name="color_name" widget="color" options="{'readonly_mode': 'default'}"/>
+                    <field name="company_id"/>
+                    <field name="status"/>
+                    <field name="migrate_data" string="Migrate Data"/>
+                    <field name="reference_id" string="Reference Id"/>
+                </tree>
+            </field>
+        </record>
+
+
+    <record id="action_color_tree" model="ir.actions.act_window">
+            <field name="name">colorTree</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">color</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="action_color_form" model="ir.actions.act_window">
+            <field name="name">Color Form</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">color</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help">Create and manage the color details that will be managed by Odoo from here.</field>
+        </record>
+
+    <menuitem name="Color" action="action_color_form" id="menu_action_color_form"
+              parent="stock.menu_product_in_config_stock" sequence="6"/>
+
+    <!--    Piyush: code for color Menu in the inventory under product > product category ends here-->
+
+
+
+    <!--    Piyush: code for Children Menu in the inventory under product > product category-->
+
+        <record id="view_children_form" model="ir.ui.view">
+            <field name="name">children.form</field>
+            <field name="model">customer.children</field>
+            <field name="arch" type="xml">
+                <form string="Children details">
+                    <group col="4" colspan="4">
+                        <field name="migrate_data" string="Migrate Data" readonly="1"/>
+                        <field name="reference_id" string="Reference Id"/>
+                        <field name="name"/>
+                        <field name="customer_id"/>
+                        <field name="child_birth_date"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_children_tree" model="ir.ui.view">
+            <field name="name">children.tree</field>
+            <field name="model">customer.children</field>
+            <field name="arch" type="xml">
+                <tree string="Children">
+                    <field name="name"/>
+                    <field name="customer_id"/>
+                    <field name="child_birth_date"/>
+                    <field name="migrate_data" string="Migrate Data"/>
+                    <field name="reference_id" string="Reference Id"/>
+                </tree>
+            </field>
+        </record>
+
+
+    <record id="action_children_tree" model="ir.actions.act_window">
+            <field name="name">Children Tree</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">customer.children</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="action_children_form" model="ir.actions.act_window">
+            <field name="name">Children Form</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">customer.children</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help">Create and manage the Children details that will be managed by Odoo from here.</field>
+        </record>
+
+    <menuitem name="Children" action="action_children_form" id="menu_action_children_form"
+              parent="stock.menu_product_in_config_stock" sequence="6"/>
+
+    <!--    Piyush: code for Children Menu in the inventory under product > product category ends here-->
+
+
+    <!--    Piyush: code for Inheriting Customer fields -->
+
+    <record id="customer_ecom_inherit_view" model="ir.ui.view">
+        <field name="name">customer.ecom.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//label[@for='street']" position="before">
+                    <field name="migrate_data" string="Migrate Data"/>
+                </xpath>
+
+            <xpath expr="//page[@name='sales_purchases']" position="after">
+               <page name="migrate_info" string="Children" attrs="{'invisible': [('migrate_data', '=', False)]}">
+                    <separator string="Ecom Integration"/>
+                    <form>
+                        <group col="2" colspan="4">
+                            <field name="reference_id" readonly="1"/>
+                        </group>
+                    </form>
+                    <field name="children_ids"/>
+               </page>
+
+               <page name="customer_cart" string="Customer Cart" attrs="{'invisible': [('migrate_data', '=', False)]}">
+                    <separator string="Cart Items"/>
+                    <field name="cart_ids"/>
+               </page>
+
+               <page name="customer_wishlist" string="Customer Wishlist" attrs="{'invisible': [('migrate_data', '=', False)]}">
+                    <separator string="WishList Items"/>
+                    <field name="wishlist_ids"/>
+               </page>
+
+             </xpath>
+        </field>
+    </record>
+
+
+    <!--    Piyush: code for Inheriting customer fields ends here -->
+
+
+
+    <!--    Piyush: code for Inheriting sale order fields -->
+
+    <record id="sale_order_ecom_inherit_view" model="ir.ui.view">
+        <field name="name">sale.order.ecom.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+
+            <field name="partner_id" position="before">
+                <field name="migrate_data"/>
+                <field name="reference_id"/>
+            </field>
+
+             <field name="check_scheduled" position="after">
+                <field name="data_from_hoitymoppet" invisible="1"/>
+                <field name="coupon_id"/>
+            </field>
+
+            <xpath expr="//tree//field[@name='additional_info']" position="before">
+                <field name="age_id" attrs="{'column_invisible': [('parent.data_from_hoitymoppet', '=', False)]}"/>
+                <field name="color_id" attrs="{'column_invisible': [('parent.data_from_hoitymoppet', '=', False)]}"/>
+                <field name="custom_measure_master_id" attrs="{'column_invisible': [('parent.data_from_hoitymoppet', '=', False)]}"/>
+                <button name="get_user_custom_measures" type="object" string="Custom User Measures"
+                        icon="fa-list" attrs="{'invisible': [('custom_measure_master_id', '=', False)]}"/>
+            </xpath>
+
+            <xpath expr="//form//field[@name='additional_info']" position="before">
+                <field name="age_id" attrs="{'column_invisible': [('parent.data_from_hoitymoppet', '=', False)]}"/>
+                <field name="color_id" attrs="{'column_invisible': [('parent.data_from_hoitymoppet', '=', False)]}"/>
+                <field name="custom_measure_master_id" attrs="{'column_invisible': [('parent.data_from_hoitymoppet', '=', False)]}"/>
+            </xpath>
+
+            <!--Jatin added shipping charges field-->
+            <xpath expr="//form//field[@name='amount_untaxed']" position="after">
+                <field name="shipping_charges"  widget='monetary'/>
+            </xpath>
+
+        </field>
+    </record>
+
+    <!--    Piyush: code for Inheriting sale order fields ends here -->
+
+
+    <!--    Piyush: code for Measurement Master Menu in the inventory under product > product category-->
+
+        <record id="view_measurement_master_form" model="ir.ui.view">
+            <field name="name">measurement.master.form</field>
+            <field name="model">measurement.master</field>
+            <field name="arch" type="xml">
+                <form string="Measurement details">
+                    <group col="4" colspan="4">
+                        <field name="migrate_data" string="Migrate Data"/>
+                        <field name="reference_id" string="Reference Id"/>
+                        <field name="name"/>
+                        <field name="size_unit"/>
+                        <field name="status"/>
+                        <field name="company_id"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_measurement_master_tree" model="ir.ui.view">
+            <field name="name">measurement.master.tree</field>
+            <field name="model">measurement.master</field>
+            <field name="arch" type="xml">
+                <tree string="Measurement Details">
+                    <field name="name"/>
+                    <field name="migrate_data"/>
+                    <field name="reference_id"/>
+                    <field name="size_unit"/>
+                    <field name="status"/>
+                    <field name="company_id"/>
+                </tree>
+            </field>
+        </record>
+
+
+    <record id="action_measurement_master_tree" model="ir.actions.act_window">
+            <field name="name">Measurement Master Tree</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">measurement.master</field>
+            <field name="view_type">tree</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="action_measurement_master_form" model="ir.actions.act_window">
+            <field name="name">Measurement Master Form</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">measurement.master</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help">Create and manage the measurement master details that will be managed by Odoo from here.</field>
+        </record>
+
+    <menuitem name="Measurement Master" action="action_measurement_master_form" id="menu_action_measurement_master_form"
+              parent="stock.menu_product_in_config_stock" sequence="6"/>
+
+    <!--    Piyush: code for Measurement Master Menu in the inventory under product > product category ends here-->
+
+
+    <!--    Piyush: code for Measures Menu in the inventory under product > product category-->
+
+        <record id="view_measures_form" model="ir.ui.view">
+            <field name="name">measures.form</field>
+            <field name="model">measures</field>
+            <field name="arch" type="xml">
+                <form string="Measures">
+                    <group col="4" colspan="4">
+                        <field name="measure_name" string="Measure Name"/>
+                        <field name="age" string="Age"/>
+                        <field name="value" string="Value"/>
+                        <field name="migrate_data" string="Migrate Data"/>
+                        <field name="reference_id" string="Reference Id"/>
+                        <field name="size_unit"/>
+                        <field name="status" string="Status"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_measures_tree" model="ir.ui.view">
+            <field name="name">measures.tree</field>
+            <field name="model">measures</field>
+            <field name="arch" type="xml">
+                <tree string="Measures">
+                    <field name="measure_name" string="Measure Name"/>
+                    <field name="age" string="Age"/>
+                    <field name="migrate_data"/>
+                    <field name="reference_id"/>
+                    <field name="value" string="Value"/>
+                    <field name="size_unit"/>
+                    <field name="status" string="Status"/>
+                </tree>
+            </field>
+        </record>
+
+    <record id="view_measures_search" model="ir.ui.view">
+        <field name="name">measures.search.view</field>
+        <field name="model">measures</field>
+        <field name="arch" type="xml">
+            <search>
+                <group expand="0" string="Group By">
+                    <filter string="Age" name="group_age" domain="[]" context="{'group_by': 'age'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+
+    <record id="action_measures_tree" model="ir.actions.act_window">
+            <field name="name">Measures Tree</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">measures</field>
+            <field name="view_type">tree</field>
+            <field name="search_view_id" ref="view_measures_search"/>
+            <field name="context">{'search_default_group_age':1'}</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="action_measures_form" model="ir.actions.act_window">
+            <field name="name">Measures Form</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">measures</field>
+            <field name="view_type">form</field>
+            <field name="search_view_id" ref="view_measures_search"/>
+            <field name="context">{'search_default_group_age':1'}</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help">Create and manage the measures details that will be managed by Odoo from here.</field>
+        </record>
+
+    <menuitem name="Measures" action="action_measures_form" id="menu_action_measures_form"
+              parent="stock.menu_product_in_config_stock" sequence="7"/>
+
+    <!--    Piyush: code for Measures Menu in the inventory under product > product category ends here-->
+
+
+    <!--    Piyush: code for User custom measures Menu in the inventory under product > product category-->
+
+    <record id="view_custom_measures_form" model="ir.ui.view">
+        <field name="name">custom.measures.form</field>
+        <field name="model">custom.measures</field>
+        <field name="arch" type="xml">
+            <form string="Custom Measures">
+                <group col="4" colspan="4">
+                    <field name="user_custom_size_name"/>
+                    <field name="measures_id" options="{'no_create': True, 'no_open': True}"/>
+                    <field name="customer" options="{'no_create': True, 'no_open': True}"/>
+                    <field name="age" options="{'no_create': True, 'no_open': True}"/>
+                    <field name="standard_value"/>
+                    <field name="custom_measures_master"/>
+                    <field name="custom_value"/>
+                    <field name="status"/>
+                    <field name="associated_company"/>
+                    <field name="migrate_data" string="Migrate Data"/>
+                    <field name="reference_id" string="Reference Id"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_custom_measures_tree" model="ir.ui.view">
+        <field name="name">custom.measures.tree</field>
+        <field name="model">custom.measures</field>
+        <field name="arch" type="xml">
+            <tree string="Custom Measures">
+                <field name="user_custom_size_name"/>
+                <field name="measures_id"/>
+                <field name="customer"/>
+                <field name="age"/>
+                <field name="standard_value"/>
+                <field name="custom_value"/>
+                <field name="custom_measures_master" invisible="1"/>
+                <field name="status"/>
+                <field name="associated_company" invisible="1"/>
+                <field name="migrate_data" invisible="1"/>
+                <field name="reference_id" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+
+    <record id="action_custom_measures_tree" model="ir.actions.act_window">
+            <field name="name">Custom Measures</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">custom.measures</field>
+            <field name="view_type">tree</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="action_custom_measures_form" model="ir.actions.act_window">
+            <field name="name">Custom Measures</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">custom.measures</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help">Create and manage the custom measures details that will be managed by Odoo from here.</field>
+        </record>
+
+    <menuitem name="Custom Measures" action="action_custom_measures_form" id="menu_action_custom_measures_form"
+              parent="stock.menu_product_in_config_stock" sequence="7"/>
+
+    <!--    Piyush: code for Custom Measures Menu in the inventory under product > product category ends here-->
+
+
+    <!--    Piyush: code for Age Measures Menu in the inventory under product > product category-->
+
+        <record id="view_age_measures_form" model="ir.ui.view">
+            <field name="name">age.measures.form</field>
+            <field name="model">age.measures</field>
+            <field name="arch" type="xml">
+                <form string="Age Measures">
+                    <group col="2">
+                        <field name="age" string="Age" options="{'no_create': True, 'no_open': True}"/>
+                        <field name="migrate_data"/>
+                    </group>
+                    <hr/><hr/>
+                        <field name="measure_ids" context="{ 'default_age': age, 'default_migrate_data': migrate_data }">
+                            <tree  editable="false" delete="false">
+                                <field name="measure_name"/>
+                                <field name="age" force_save="1" invisible="1"/>
+                                <field name="value" force_save="1"/>
+                                <field name="size_unit" force_save="1"/>
+                                <field name="migrate_data" readonly="1" invisible="1" force_save="1"/>
+                                <field name="status"/>
+                            </tree>
+                        </field>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_age_measures_tree" model="ir.ui.view">
+            <field name="name">age.measures.tree</field>
+            <field name="model">age.measures</field>
+            <field name="arch" type="xml">
+                <tree string="Age Measures">
+                    <field name="age" string="Age"/>
+                    <field name="measure_ids"/>
+                </tree>
+            </field>
+        </record>
+
+
+    <record id="action_age_measures_tree" model="ir.actions.act_window">
+            <field name="name">Age Measures Tree</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">age.measures</field>
+            <field name="view_type">tree</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="action_age_measures_form" model="ir.actions.act_window">
+            <field name="name">Age Measures Form</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">age.measures</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help">Create and manage the age measures details that will be managed by Odoo from here.</field>
+        </record>
+
+    <menuitem name="Age Measures" action="action_age_measures_form" id="menu_action_age_measures_form"
+              parent="stock.menu_product_in_config_stock" sequence="7"/>
+
+    <!--    Piyush: code for Measures Menu in the inventory under product > product category ends here-->
+    <!--Jatin:code for added shipping charges model-->
+    <record id="view_shipping_charges_form" model="ir.ui.view">
+        <field name="name">shipping.charges.form</field>
+        <field name="model">shipping.charges</field>
+        <field name="arch" type="xml">
+            <form string="Shipping Charges">
+                <group col="4" colspan="4">
+                    <field name="associated_company"/>
+                    <field name="status" />
+                    <field name="migrate_data" />
+                    <field name="reference_id"/>
+                    <field name="free_order_value"/>
+                    <field name="charge_type" widget="radio" />
+                    <field name="max_charge" widget="radio" attrs="{'invisible': [('charge_type', '=', 'specific_amount')]}"/>
+                    <field name="specific_charge" attrs="{'invisible': [('charge_type', '=', 'prod_based_charge')]}"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_shipping_charges_tree" model="ir.ui.view">
+        <field name="name">shipping.charges.tree</field>
+        <field name="model">shipping.charges</field>
+        <field name="arch" type="xml">
+            <tree string="Shipping Charges">
+                <field name="associated_company"/>
+                <field name="status"/>
+                <field name="migrate_data"/>
+                <field name="reference_id"/>
+                <field name="free_order_value"/>
+                <field name="charge_type"/>
+                <field name="max_charge"/>
+                <field name="specific_charge"/>
+            </tree>
+        </field>
+    </record>
+    <record id="action_shipping_charges_form" model="ir.actions.act_window">
+            <field name="name">Shipping Charges</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">shipping.charges</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help">Create and manage the shipping charges for ur company.</field>
+        </record>
+
+    <menuitem name="Shipping Charges" action="action_shipping_charges_form" id="menu_action_shipping_charges_form"
+              parent="sale.sale_order_menu" />
+<!--Jatin :code for shipping charges model-->
+
+</odoo>

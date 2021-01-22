@@ -1,0 +1,520 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="report_invoice_update_print">
+            <t t-call="web.basic_layout">
+<!--                <t t-foreach="range(o._get_print_page_number())" t-as="n">-->
+                <div class="page" style="page-break-after:always;">
+                    <xpath expr="//div[@class='header']" position="replace">
+                        <div class="header">
+                            <div class="col-xs-12" style="padding-left: 0px; padding-right: 0px;">
+                                <h3 style="text-align:center; text-transform: uppercase;"><strong>Tax Invoice</strong>
+                                </h3>
+                                <span style="margin-top:-30px; float:right;" ><small t-esc="o._get_copy_name(n_copy)" /></span>
+                            </div>
+                            <div class="row" style="font-size:12px;">
+                                <div class="col-xs-12" style="border: 1px solid black; padding-left:0px; padding-right:0px;">
+                                    <div name="invoice_address" class="col-xs-6" style="padding-left:0px; padding-right:0px;">
+                                         <div style="padding-left:15px"><strong t-field="o.company_id.name" /></div>
+                                         <div style="padding-left:15px"><span t-field="o.company_id.street" /></div>
+                                         <div style="padding-left:15px"><span t-field="o.company_id.street2" />-<span t-field="o.company_id.city" />-<span t-field="o.company_id.zip" />
+                                         </div>
+                                         <div style="padding-left:15px">GSTIN/UIN: <span t-field="o.company_id.vat" /></div>
+                                         <div style="padding-left:15px">State Name : <span t-field="o.company_id.state_id.name" /> Code: <span t-field="o.company_id.state_id.l10n_in_tin" /></div>
+                                         <div style="padding-left:15px; padding-bottom: 5px;w">Email : <span t-field="o.company_id.email" /></div>
+                                         <div class="col-xs-12" style="border-top:1px solid black;"> </div>
+                                         <div style="padding-left:15px">Buyer</div>
+                                         <div style="padding-left:15px"><strong t-field="o.partner_shipping_id.name" /></div>
+                                         <div style="padding-left:15px"><span t-field="o.partner_shipping_id.street" /></div>
+                                         <div style="padding-left:15px"><span t-field="o.partner_shipping_id.street2" />-<span t-field="o.partner_shipping_id.city" />-<span t-field="o.partner_shipping_id.zip" />
+                                             <span t-field="o.partner_shipping_id.state_id.name" />( <span t-field="o.partner_shipping_id.country_id.name" /> )
+                                         </div>
+                                         <div style="padding-left:15px">GSTIN/UIN <span style="padding-left: 43px;">: <span t-field="o.partner_shipping_id.vat" /></span></div>
+                                         <div style="padding-left:15px">State Name <span style="padding-left: 40px;">: <span t-field="o.partner_shipping_id.state_id.name" /> Code: <span t-field="o.partner_shipping_id.state_id.l10n_in_tin" /></span></div>
+                                         <div style="padding-left:15px">Place of Supply <span style="padding-left: 20px;">: <span t-field="o.partner_shipping_id.state_id.name" /></span></div>
+                                     </div>
+                                    <div class="col-xs-6" style="border-left: 1px solid black; padding-left:0px; padding-right:0px;">
+                <!--                               Row-1 Invoice Number-->
+                                        <div class="col-xs-12" style="border-bottom: 1px solid black; padding-left:0px; padding-right:0px;">
+                                            <div class="col-xs-6" style="height:34px;border-right: 1px solid black;">
+                                                <span>Invoice No.</span> <br /> <strong t-field="o.number"/>
+                                            </div>
+                                            <div class="col-xs-6">
+                                                <span>Dated</span> <br /> <strong t-field="o.date_invoice"/>
+                                            </div>
+                                        </div>
+                <!--                                Row 2 Delivery note-->
+                                        <div class="col-xs-12" style="border-bottom: 1px solid black; padding-left:0px; padding-right:0px;">
+                                            <div class="col-xs-6" style="height:32px;border-right: 1px solid black;">
+                                                <span>Deliver Note</span> <br />
+                                            </div>
+                                            <div class="col-xs-6">
+                                                <span>Mode/Terms of Payment</span> <br /> <strong t-field="o.payment_term_id.name"/>
+                                            </div>
+                                        </div>
+                <!--                                Row 3 Supplier-->
+                                        <div class="col-xs-12" style="border-bottom: 1px solid black; padding-left:0px; padding-right:0px;">
+                                            <div class="col-xs-6" style="height:32px;border-right: 1px solid black;">
+                                                <span>Supplier's Ref<br /> <strong t-field="o.number"/></span>
+                                            </div>
+                                            <div class="col-xs-6">
+                                                <span>Other Reference(s) <br /> <strong t-field="o.name"/></span>
+                                            </div>
+                                        </div>
+                <!--                                Row 4 Buyer's-->
+                                        <div class="col-xs-12" style="border-bottom: 1px solid black; padding-left:0px; padding-right:0px;">
+                                            <div class="col-xs-6" style="height:32px;border-right: 1px solid black;">
+                                                <span>Buyer's Order No. <br /> <strong t-field="o.sale_id" /> </span>
+                                            </div>
+                                            <div class="col-xs-6">
+                                                <span>Dated <br /> <strong t-field="o.sale_id.date_order" t-options='{"widget": "date"}' /> </span>
+                                            </div>
+                                        </div>
+                <!--                                Row 5 Despatch-->
+                                        <div class="col-xs-12" style="border-bottom: 1px solid black; padding-left:0px; padding-right:0px;">
+                                            <div class="col-xs-6" style="height:34px;border-right: 1px solid black;">
+                                                <span>Despatch Document No. <br /> <strong t-field="o.dispatch_ids.name" /> </span>
+                                            </div>
+                                            <div class="col-xs-6">
+                                                <span>Delivery Note Date <br /> <strong t-field="o.dispatch_ids.delivered_date" /></span>
+                                            </div>
+                                        </div>
+                <!--                                Row 6 Despatched through-->
+                                        <div class="col-xs-12" style="border-bottom: 1px solid black; padding-left:0px; padding-right:0px;">
+                                            <div class="col-xs-6" style="height:32px;border-right: 1px solid black; ">
+                                                <span>Despatched Through</span> <br /> <strong t-field="o.dispatch_ids.cust_transport_id" />
+                                            </div>
+                                            <div class="col-xs-6">
+                                                <span>Destination <br /> <strong t-field="o.partner_shipping_id.state_id.name" /></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12" style="height:70px;">
+                                            <p>Terms of Delivery</p> <br />
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </xpath>
+                    <div class="row" style="font-size:12px;">
+                        <div class="col-xs-12" style="border: 1px solid black; padding-left:0px; padding-right:0px;">
+                            <table class="" name="invoice_line_table" style="width:100% !important; height:340px;">
+                                <t t-set="total_qty" t-value="0"/>
+                                <thead>
+                                    <tr>
+                                        <th class="" style="border-right: 1px solid black;border-bottom: 1px solid black; padding-left:5px;padding-right:5px;"><span style="">SI<br /> No</span></th>
+                                        <th class="" style="width:45%; border-right: 1px solid black;border-bottom: 1px solid black;"><span style="padding-left:5px;">Description of Goods</span></th>
+                                        <th class="" style="border-right: 1px solid black;border-bottom: 1px solid black;"><span style="padding-left:5px;padding-right:5px;">HSN/SAC</span></th>
+                                        <th class="" style="width:10%; border-right: 1px solid black;border-bottom: 1px solid black;"><span style="padding-left:5px;padding-right:5px;">Qty</span></th>
+                                        <th class="" style="border-right: 1px solid black;border-bottom: 1px solid black;"><span style="padding-left:5px;padding-right:5px;">Rate</span></th>
+                                        <th class="" style="border-right: 1px solid black;border-bottom: 1px solid black;"><span style="padding-left:5px;padding-right:5px;">Per</span></th>
+                                        <t t-if="o.check_is_discount_applied()">
+                                            <th class="text-center" style="padding-right:5px; border-right: 1px solid black;border-bottom: 1px solid black;"><span style="padding-left:5px;padding-right:5px;">Disc %</span></th>
+                                            <th class="text-center" style="padding-right:5px; border-right: 1px solid black;border-bottom: 1px solid black;"><span style="padding-left:5px;padding-right:5px;">Discounted Price</span></th>
+                                        </t>
+                                        <th class="text-right" style="width: 15%; border-bottom: 1px solid black;"><span style="padding-right:5px;">Amount</span></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="o._get_print_inline_items()" t-as="l">
+                                        <t t-if="l['product_id']">
+                                            <td class="" style="border-right: 1px solid black;padding-left:5px;"> <span t-esc="l_index+1"/></td>
+                                            <td class="" style="border-right: 1px solid black;padding-left:5px;">
+                                                <span > <strong style="font-size:13px;" t-esc="l['product_name']"/> </span> <br/>
+                                                <span style="padding-left:5px; font-style:italic;">ITEM CODE- </span>
+                                                <span style="font-style:italic;" t-esc="l['product_default_code']"/>
+                                            </td>
+                                            <td class="" style="border-right: 1px solid black;padding-left:5px;">
+                                                <span t-esc="l['product_id_hsn_id']"/></td>
+                                            <td class="text-right" style="border-right: 1px solid black; padding-right: 5px;">
+                                                <strong t-esc="l['quantity']" t-options='{"widget": "float", "decimal_precision": "Quantity"}'/>
+                                                <strong> nos</strong>
+                                                <t t-set="total_qty" t-value="total_qty+l['quantity']" />
+                                            </td>
+                                            <td class="text-right" style="border-right: 1px solid black;padding-right:5px;">
+                                                <span style="padding-left:5px;" t-esc="l['price_unit']"/>
+                                            </td>
+                                            <td class=" text-right" style="border-right: 1px solid black;padding-right:5px; padding-left:5px;padding-right:5px">
+                                                <span t-esc="l['uom_id']"/>
+                                            </td>
+                                            <t t-if="l['discount_applied']">
+                                                <td class="" style="border-right: 1px solid black;padding-left:5px;padding-right:5px">
+                                                    <span t-esc="l['discount']"/>
+                                                </td>
+                                                <td class="" style="text-align:right; border-right: 1px solid black;padding-left:5px;padding-right:5px;">
+                                                    <span t-esc="'%.2f'% l['discount_unit_price']"/>
+                                                </td>
+                                            </t>
+                                            <td class=" text-right" style="padding-right:5px;" id="subtotal">
+                                                <strong t-esc="l['price_subtotal']"
+                                                    t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                            </td>
+                                        </t>
+                                        <t t-if="not l['product_id']">
+                                            <td class="" style="border-right: 1px solid black;padding-left:5px;" />
+                                            <td class="" style="border-right: 1px solid black;padding-left:5px;" />
+                                            <td class="" style="border-right: 1px solid black;padding-left:5px;" />
+                                            <td class=" text-right" style="border-right: 1px solid black; padding-right: 10px;" />
+                                            <td class=" text-right" style="border-right: 1px solid black;padding-right:5px;" />
+                                            <td class=" text-right" style="border-right: 1px solid black;padding-right:5px;" />
+                                            <t t-if="o.check_is_discount_applied()">
+                                                <td class="" style="border-right: 1px solid black;padding-left:5px;" />
+                                                <td class="" style="border-right: 1px solid black;padding-left:5px;" />
+                                            </t>
+                                            <td class=" text-right" style="padding-right:5px;" id="subtotal" />
+                                        </t>
+                                    </tr>
+                                    <tr>
+                                        <td class="" style="border-right: 1px solid black;" />
+                                        <td class="" style="border-right: 1px solid black;" />
+                                        <td class="" style="border-right: 1px solid black;" />
+                                        <td class="" style="border-right: 1px solid black;" />
+                                        <td class="" style="border-right: 1px solid black;" />
+                                        <td class="" style="border-right: 1px solid black;" />
+                                        <t t-if="o.check_is_discount_applied()">
+                                            <td class="" style="border-right: 1px solid black;padding-left:5px;" />
+                                            <td class="" style="border-right: 1px solid black;padding-left:5px;" />
+                                        </t>
+                                        <td class=" text-right" style="border-top: 1px solid black; padding-right:5px;">
+                                            <span t-esc="o.get_sub_total_amount()" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="" style="border-right: 1px solid black;" />
+                                        <td class="" style="padding-top:30px; border-right: 1px solid black;" />
+                                        <td class="" style="border-right: 1px solid black;" />
+                                        <td class="" style="border-right: 1px solid black;" />
+                                        <td class="" style="border-right: 1px solid black;" />
+                                        <td class="" style="border-right: 1px solid black;" />
+                                        <t t-if="o.check_is_discount_applied()">
+                                            <td class="" style="border-right: 1px solid black;padding-left:5px;" />
+                                            <td class="" style="border-right: 1px solid black;padding-left:5px;" />
+                                        </t>
+                                        <td class=" text-right" />
+                                    </tr>
+                                    <tr t-foreach="o._get_all_applied_taxes()" t-as="t">
+                                        <td class="" style="border-right: 1px solid black;" />
+                                        <td class="" style="border-right: 1px solid black;padding-left:5px;"><strong> Output <span t-esc="t['name']" /></strong> </td>
+                                        <td class="" style="border-right: 1px solid black;" />
+                                        <td class="" style="border-right: 1px solid black;" />
+                                        <td class="" style="border-right: 1px solid black;" />
+                                        <td class="" style="border-right: 1px solid black;" />
+                                        <t t-if="o.check_is_discount_applied()">
+                                            <td class="" style="border-right: 1px solid black;padding-left:5px;" />
+                                            <td class="" style="border-right: 1px solid black;padding-left:5px;" />
+                                        </t>
+                                        <td class=" text-right" style="padding-right:5px;">
+                                            <strong t-esc="t['amount']" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                        </td>
+                                    </tr>
+                                    <tr t-foreach="o._get_cash_round_item()" t-as="t">
+                                        <td class="" style="border-right: 1px solid black;" />
+                                        <td class="" style="border-right: 1px solid black; padding-left:5px;"><span t-esc="t['name']" /></td>
+                                        <td class="" style="border-right: 1px solid black;" />
+                                        <td class="text-right" style="border-right: 1px solid black;" />
+                                        <td class="text-right" style="border-right: 1px solid black;" />
+                                        <td class="" style="border-right: 1px solid black;" />
+                                        <t t-if="o.check_is_discount_applied()">
+                                            <td class="" style="border-right: 1px solid black;padding-left:5px;" />
+                                            <td class="" style="border-right: 1px solid black;padding-left:5px;" />
+                                        </t>
+                                        <td class="text-right" style="padding-right:5px;">
+                                            <span t-esc="t['price_subtotal']" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="" style="border-right: 1px solid black;" />
+                                        <td class="" style="padding-top:25px; border-right: 1px solid black;" />
+                                        <td class="" style="border-right: 1px solid black;" />
+                                        <td class="" style="border-right: 1px solid black;" />
+                                        <td class="" style="border-right: 1px solid black;" />
+                                        <td class="" style="border-right: 1px solid black;" />
+                                        <t t-if="o.check_is_discount_applied()">
+                                            <td class="" style="border-right: 1px solid black;padding-left:5px;" />
+                                            <td class="" style="border-right: 1px solid black;padding-left:5px;" />
+                                        </t>
+                                        <td class=" text-right" />
+                                    </tr>
+                                    <tr style="border-top: 1px solid black;">
+                                        <th class="" style="border-right: 1px solid black; padding-left:5px;" />
+                                        <th class="" style="border-right: 1px solid black;border-left: 1px solid black;"><span style="padding-left:5px;">Total</span></th>
+                                        <th class="" style="border-right: 1px solid black;" />
+                                        <th class="text-right" style="border-right: 1px solid black;padding-right:5px;"><span t-esc="total_qty" t-options='{"widget": "float", "decimal_precision": "Quantity"}' /> <strong>nos</strong></th>
+                                        <th class="" style="border-right: 1px solid black;" />
+                                        <th class="" style="border-right: 1px solid black;" />
+                                        <t t-if="o.check_is_discount_applied()">
+                                            <td class="" style="border-right: 1px solid black;padding-left:5px;" />
+                                            <td class="" style="border-right: 1px solid black;padding-left:5px;" />
+                                        </t>
+                                        <th class="text-right" style="border-right: 1px solid black;">
+                                            <span style="padding-right:5px;" t-field="o.amount_total" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                        </th>
+                                    </tr>
+                                </tbody>
+<!--                                        <tfoot>-->
+<!--                                            <tr style="border-top: 1px solid black;">-->
+<!--                                                <th class="" style="border-right: 1px solid black; padding-left:5px;" />-->
+<!--                                                <th class="" style="border-right: 1px solid black;border-left: 1px solid black;"><span style="padding-left:5px;">Total</span></th>-->
+<!--                                                <th class="" style="border-right: 1px solid black;" />-->
+<!--                                                <th class="text-right" style="border-right: 1px solid black;padding-right:5px;"><span t-esc="total_qty" t-options='{"widget": "float", "decimal_precision": "Quantity"}' /> <strong>nos</strong></th>-->
+<!--                                                <th class="" style="border-right: 1px solid black;" />-->
+<!--                                                <th class="" style="border-right: 1px solid black;" />-->
+<!--                                                <t t-if="o.check_is_discount_applied()">-->
+<!--                                                    <td class="" style="border-right: 1px solid black;padding-left:5px;" />-->
+<!--                                                    <td class="" style="border-right: 1px solid black;padding-left:5px;" />-->
+<!--                                                </t>-->
+<!--                                                <th class="text-right" style="border-right: 1px solid black;">-->
+<!--                                                    <span style="padding-right:5px;" t-field="o.amount_total" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>-->
+<!--                                                </th>-->
+<!--                                            </tr>-->
+<!--                                        </tfoot>-->
+                            </table>
+                        </div>
+                        <div class="col-xs-12" style="border: 1px solid black; padding-top:5px; page-break-always:auto; page-break-inside:avoid;">
+
+                            <p><span style="text-align:left">Amount Chargeable (in words)</span> <span class="text-right">E. and O.E.</span></p>
+                            <p id="total_in_words" class="mb16">
+                                <strong style="font-size:14px;" t-esc="o._get_total_amount_in_words('amount_total')"/>
+<!--                                        <strong style="font-size:14px;" t-field="o.amount_total_words"/>-->
+                            </p>
+                        </div>
+                        <div class="col-xs-12" style="border: 1px solid black; padding-left:0px; padding-right:0px; page-break-always:auto; page-break-inside:avoid;">
+        <!--                    Table with IGST taxes-->
+                            <t t-if="o._get_tax_type()">
+                                <table style="width:100% !important;">
+                                    <thead>
+                                        <td class="text-center" style="width:60% !important; border-bottom: 1px solid black; padding-left:0px; padding-right:0px;" >
+                                            HSN/SAC
+                                        </td>
+                                        <td class="text-center" style="width:10% !important;border-left: 1px solid black; border-bottom: 1px solid black; padding-left:0px; padding-right:0px;">Taxable Value</td>
+                                        <td class="" style="width:20% !important;border-left: 1px solid black; border-bottom: 1px solid black;">
+                                            <table style="" >
+                                                <tr class="text-center col-xs-12" style="border-bottom: 1px solid black;"><p style="text-align:center;">Integrated Tax</p></tr>
+                                                <tr class="col-xs-12" style="padding-left:0px; padding-right:0px;">
+                                                    <td class="col-xs-6" style="padding-right:20px;">Rate</td>
+                                                    <td class="col-xs-6 text-right" style="border-left: 1px solid black;">Amount</td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                        <td class="" style="width:10% !important;border-left: 1px solid black;border-bottom: 1px solid black; padding-left:0px; padding-right:0px;text-align:center;">Total <br /> Tax Amount</td>
+                                    </thead>
+                                    <tbody>
+                                        <tr t-foreach="o._get_order_line_taxes()" t-as="l" >
+                                            <td class="" ><span style="padding-left:15px;" t-esc="l['hsn_code']"/></td>
+                                            <td class="text-right" style="padding-right:5px; border-left: 1px solid black;"><span t-esc="'%.2f'% l['price_subtotal']"/></td>
+                                            <t t-if="l['igst_tax_group'] == 'IGST'">
+                                                <td class="" style="border-left: 1px solid black;">
+                                                    <table style="">
+                                                        <tbody>
+                                                            <tr class="" style="padding-left:0px; padding-right:0px;">
+                                                                <t t-if="l['igst_tax_name']">
+                                                                    <td class="text-right" style="width:68px; padding-right:5px;"><span t-esc="l['igst_tax_name']"/></td>
+                                                                    <td class="text-right" style="padding-left:20px; border-left: 1px solid black;"><span t-esc="l['igst_tax_price']" /></td>
+                                                                </t>
+                                                                <t t-if="not l['igst_tax_name']">
+                                                                    <td class="text-right" style="width:68px;"><span style="visibility: hidden;">adasd</span></td>
+                                                                    <td class="text-right" style="border-left: 1px solid black;visibility: hidden;">asdaf</td>
+                                                                </t>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </t>
+                                            <t t-if="l['igst_tax_group'] != 'IGST'">
+                                                <td class="" style="border-left: 1px solid black;">
+                                                    <table style="">
+                                                        <tbody>
+                                                            <tr class="" style="padding-left:0px; padding-right:0px;">
+                                                                <td class="text-right" style="width:68px;"><span style="visibility: hidden;">adasd</span></td>
+                                                                <td class="text-right" style="border-left: 1px solid black;visibility: hidden;">asdaf</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </t>
+                                            <td class="text-right" style="padding-right:5px; border-left: 1px solid black;"> <span t-esc="'%.2f'% l['total']"/></td>
+                                        </tr>
+                                        <tfoot>
+                                            <tr style="font-weight: bold;">
+                                                <td class="" style="border-top: 1px solid black; text-align: right;padding-right:5px;">Total</td>
+                                                <td class=" text-right" style="border-left: 1px solid black; border-top: 1px solid black; padding-left:0px; padding-right:0px;"><span style="padding-left:15px;padding-right:5px;" t-esc="o.get_sub_total_amount()"/></td>
+                                                <td class="text-right" style="border-left: 1px solid black; border-top: 1px solid black; padding-left:0px; padding-right:0px;"><span style="padding-right:15px;" t-field="o.amount_tax"/></td>
+                                                <td class="" style="border-left: 1px solid black; border-top: 1px solid black; padding-left:0px; padding-right:0px;"><span style="padding-left:15px; padding-right:5px;" t-field="o.amount_total"/></td>
+                                            </tr>
+                                        </tfoot>
+                                    </tbody>
+                                </table>
+                            </t>
+        <!--                   Table with CGST and SGST Taxes -->
+                            <t t-if="not o._get_tax_type()">
+                                <table style="width:100% !important;">
+                                    <thead>
+                                         <td class="text-center" style="width:40% !important; border-bottom: 1px solid black; padding-left:0px; padding-right:0px;" >
+                                            HSN/SAC
+                                        </td>
+                                        <td class="text-center" style="width:10% !important;border-left: 1px solid black; border-bottom: 1px solid black; padding-left:0px; padding-right:0px;">Taxable Value</td>
+                                        <td class="" style="width:20% !important;border-left: 1px solid black; border-bottom: 1px solid black;">
+                                            <table style="" >
+                                                <tr class="text-center col-xs-12" style="border-bottom: 1px solid black;"><p style="text-align:center;">Central Tax</p></tr>
+                                                <tr class="col-xs-12" style="padding-left:0px; padding-right:0px;">
+                                                    <td class="col-xs-6" style="padding-right:20px;">Rate</td>
+                                                    <td class="col-xs-6 text-right" style="border-left: 1px solid black;">Amount</td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                        <td class="" style="width:20% !important;border-left: 1px solid black; border-bottom: 1px solid black;">
+                                            <table style="" >
+                                                <tr class="text-center col-xs-12" style="border-bottom: 1px solid black;"><p style="text-align:center;">State Tax</p></tr>
+                                                <tr class="col-xs-12" style="padding-left:0px; padding-right:0px;">
+                                                    <td class="col-xs-6" style="padding-right:20px;">Rate</td>
+                                                    <td class="col-xs-6 text-right" style="border-left: 1px solid black;">Amount</td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                        <td class="" style="width:10% !important;border-left: 1px solid black;border-bottom: 1px solid black; padding-left:0px; padding-right:0px;text-align:center;">Total <br /> Tax Amount</td>
+                                    </thead>
+                                    <tbody>
+                                        <tr t-foreach="o._get_order_line_taxes()" t-as="l" >
+                                            <td class="" ><span style="padding-left:15px;" t-esc="l['hsn_code']"/></td>
+                                            <td class="text-right" style="padding-right:5px; border-left: 1px solid black;"><span t-esc="'%.2f'% l['price_subtotal']"/></td>
+                                            <t t-if="l['cgst_tax_group'] == 'CGST'">
+                                                <td class="" style="border-left: 1px solid black;">
+                                                    <table style="">
+                                                        <tbody>
+                                                            <tr class="" style="padding-left:0px; padding-right:0px;">
+                                                                <t t-if="l['cgst_tax_name']">
+                                                                    <td class="text-right" style="width:68px; padding-right:5px;"><span t-esc="l['cgst_tax_name']"/></td>
+                                                                    <td class="text-right" style="padding-left:20px; border-left: 1px solid black;"><span t-esc="l['cgst_tax_price']" /></td>
+                                                                </t>
+                                                                <t t-if="not l['cgst_tax_name']">
+                                                                    <td class="text-right" style="width:68px;"><span style="visibility: hidden;">adasd</span></td>
+                                                                    <td class="text-right" style="border-left: 1px solid black;visibility: hidden;">asdaf</td>
+                                                                </t>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </t>
+                                            <t t-if="l['cgst_tax_group'] != 'CGST'">
+                                                <td class="" style="border-left: 1px solid black;">
+                                                    <table style="">
+                                                        <tbody>
+                                                            <tr class="" style="padding-left:0px; padding-right:0px;">
+                                                                <td class="text-right" style="width:68px;"><span style="visibility: hidden;">adasd</span></td>
+                                                                <td class="text-right" style="border-left: 1px solid black;visibility: hidden;">asdaf</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </t>
+                                            <t t-if="l['sgst_tax_group'] == 'SGST'">
+                                                <td class="" style="border-left: 1px solid black;">
+                                                    <table style="">
+                                                        <tbody>
+                                                            <tr class="" style="padding-left:0px; padding-right:0px;">
+                                                                <t t-if="l['sgst_tax_name']">
+                                                                    <td class="text-right" style="width:68px; padding-right:5px;"><span t-esc="l['sgst_tax_name']"/></td>
+                                                                    <td class="text-right" style="padding-left:20px; border-left: 1px solid black;"><span t-esc="l['sgst_tax_price']" /></td>
+                                                                </t>
+                                                                <t t-if="not l['sgst_tax_name']">
+                                                                    <td class="text-right" style="width:68px;"><span style="visibility: hidden;">adasd</span></td>
+                                                                    <td class="text-right" style="border-left: 1px solid black;visibility: hidden;">asdaf</td>
+                                                                </t>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </t>
+                                            <t t-if="l['cgst_tax_group'] != 'CGST'">
+                                                <td class="" style="border-left: 1px solid black;">
+                                                    <table style="">
+                                                        <tbody>
+                                                            <tr class="" style="padding-left:0px; padding-right:0px;">
+                                                                <td class="text-right" style="width:68px;"><span style="visibility: hidden;">adasd</span></td>
+                                                                <td class="text-right" style="border-left: 1px solid black;visibility: hidden;">asdaf</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </t>
+                                            <td class="text-right" style="padding-right:5px; border-left: 1px solid black;"> <span t-esc="'%.2f'% l['total']"/></td>
+                                        </tr>
+                                        <tfoot>
+                                            <tr style="font-weight: bold;" >
+                                                <td class="" style="border-top: 1px solid black; text-align: right;padding-right:5px;">Total</td>
+                                                <td class=" text-right" style="border-left: 1px solid black; border-top: 1px solid black; padding-left:0px; padding-right:0px;"><span style="padding-left:15px;padding-right:5px;" t-esc="'%.2f'% o.get_sub_total_amount()"/></td>
+                                                <t t-foreach="o._get_hsn_code_total_taxes()" t-as="l">
+                                                    <t t-if="l['name'] == 'CGST'">
+                                                        <td class="text-right" style="border-left: 1px solid black; border-top: 1px solid black; padding-left:0px; padding-right:0px;"><span style="padding-right:5px;" t-esc="'%.2f'% l['amount']"/></td>
+                                                    </t>
+                                                    <t t-if="l['name'] == 'SGST'">
+                                                        <td class="text-right" style="border-left: 1px solid black; border-top: 1px solid black; padding-left:0px; padding-right:0px;"><span style="padding-right:5px;" t-esc="'%.2f'% l['amount']"/></td>
+                                                    </t>
+                                                </t>
+                                                <td class="" style="border-left: 1px solid black; border-top: 1px solid black; padding-left:0px; padding-right:0px;"><span style="padding-left:15px; padding-right:5px;" t-field="o.amount_total"/></td>
+                                            </tr>
+                                        </tfoot>
+                                    </tbody>
+                                </table>
+                            </t>
+                        </div>
+                        <div class="col-xs-12" style="border: 1px solid black; padding-left:0px; padding-right:0px; page-break-before:auto; page-break-inside:avoid;">
+                            <p class="col-xs-12" style="padding-top: 5px;"><span style="text-align:left">Tax Amount (in words) : </span>
+                                <strong style="font-size:14px;" t-esc="o._get_total_amount_in_words('amount_tax')"/>
+<!--                                        <strong style="font-size:14px;" t-field="o.amount_tax_words"/>-->`
+                            </p>
+                            <p class="col-xs-12" style="padding-top:50px;">Company's GSTIN/UIN <span style="padding-left: 60px;">: <strong t-field="o.company_id.vat" /></span></p>
+                            <div class="col-xs-6">
+                                <p style="text-decoration: underline;">Decleration</p>
+                                <p>
+                                    We declare that this invoice shows the actual price of the
+                                    <br /> goods described and that all particulars are true and correct.
+                                </p>
+                            </div>
+                            <div class="col-xs-6" style="border-top: 1px solid black; border-left: 1px solid black; ">
+                                <p>
+                                    <strong>for <span t-field="o.company_id.name" /></strong>
+                                </p>
+                                <p class="text-right" style="margin-top: 50px;">
+                                    Authorised Signatory
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <xpath expr="//div[@class='footer']" position="replace">
+                        <div class="footer">
+                            <div class="row">
+                                <div class="col-xs-12" style="padding-left:0px; padding-right:0px;">
+                                    <span>
+                                        <small>
+                                            <span>Page</span>
+                                            <span class="page" />
+                                            of
+                                            <span class="topage" />
+                                        </small>
+                                    </span>
+                                    <span style="display:block; text-align:center;">This is a Computer Generated Invoice</span>
+                                </div>
+                            </div>
+<!--                                    <span>Page </span><span class="page" /> of <span class="topage" />-->
+<!--                                    <span style="text-align:center;">This is a Computer Generated Invoice</span>-->
+                        </div>
+                    </xpath>
+                </div>
+<!--        </t>-->
+            </t>
+        </template>
+
+        <template id="report_invoice_update">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-foreach="range(o._get_print_page_number())" t-as="n">
+                        <t t-set="n_copy" t-value="n" />
+                        <t t-call="account.report_invoice_update_print" t-lang="o.partner_id.lang"/>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

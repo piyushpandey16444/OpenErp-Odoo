@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- account.group -->
+        <!--Aman 1/10/2020 Added new default groups-->
+        <record model="account.group" id="data_account_group_sundry_debtors">
+          <field name="name">Sundry Debtors</field>
+          <field name="account_type_id" ref="account.data_account_type_receivable"/>
+        </record>
+        <record model="account.group" id="data_account_group_sundry_creditors">
+          <field name="name">Sundry Creditors</field>
+          <field name="account_type_id" ref="account.data_account_type_payable"/>
+        </record>
+        <record model="account.group" id="data_account_group_bank_accounts">
+          <field name="name">Bank Accounts</field>
+          <field name="account_type_id" ref="account.data_account_type_current_assets"/>
+        </record>
+        <record model="account.group" id="data_account_group_cash_in_hand">
+          <field name="name">Cash-In-Hand</field>
+          <field name="account_type_id" ref="account.data_account_type_current_assets"/>
+        </record>
+        <record model="account.group" id="data_account_group_bank_od">
+          <field name="name">Bank OD A/C</field>
+          <field name="account_type_id" ref="account.data_account_type_loans"/>
+        </record>
+        <record model="account.group" id="data_account_group_duties_taxes">
+          <field name="name">Duties &amp; Taxes</field>
+          <field name="account_type_id" ref="account.data_account_type_current_liabilities"/>
+        </record>
+        <record model="account.group" id="data_account_group_purchase_account">
+          <field name="name">Purchase Accounts</field>
+          <field name="account_type_id" ref="account.data_account_type_expenses"/>
+        </record>
+        <record model="account.group" id="data_account_group_sales_account">
+          <field name="name">Sales Accounts</field>
+          <field name="account_type_id" ref="account.data_account_type_revenue"/>
+        </record>
+        <record model="account.group" id="data_account_group_stock_in_hand">
+          <field name="name">Stock-In-Hand</field>
+          <field name="account_type_id" ref="account.data_account_type_current_assets"/>
+        </record>
+        <record model="account.group" id="data_account_group_tds_payable">
+          <field name="name">TDS Payable</field>
+          <field name="account_type_id" ref="account.data_account_type_current_liabilities"/>
+        </record>
+        <!--Aman end-->
+    </data>
+</odoo>
+

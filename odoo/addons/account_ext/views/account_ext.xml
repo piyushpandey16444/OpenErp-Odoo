@@ -1,0 +1,29 @@
+<odoo>
+
+   <record id="account_account_form_view_inherit_gst_ext" model="ir.ui.view">
+        <field name="name">account.account.inherit.gst</field>
+        <field name="model">account.account</field>
+        <field name="inherit_id" ref="account.view_account_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='Type']" position="after">
+                <field name="gst_applicable"/>
+                <field name="check_group_id" invisible="1"/>
+                <field name="taxes" attrs="{'invisible': [('gst_applicable', '=', False)],'required': [('gst_applicable', '=', True)]}"/>
+                <field name="nat_trans" attrs="{'invisible': ['|',('gst_applicable', '=', False),('check_group_id','=',True)],'required': [('gst_applicable', '=', True),('check_group_id','=',False)]}"/>
+                </xpath>
+            <xpath expr="//field[@name='tax_ids']" position="attributes">
+                <attribute name="attrs">{'invisible': True}</attribute>
+            </xpath>
+        </field>
+   </record>
+
+    <record id="action_nat_trans_tree" model="ir.actions.act_window">
+            <field name="name">Nature of Transaction</field>
+            <field name="res_model">nature.transaction</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+<!--            <field name="search_view_id" ref="view_account_group_search"/>-->
+        </record>
+
+        <menuitem action="action_nat_trans_tree" id="menu_action_nat_tans_test" name ="Nature of Transaction" groups="account.group_account_user" parent="account.account_account_menu" sequence="1"/>
+</odoo>
