@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	
+	<record model="ir.ui.view" id="view_sync_logs_form">
+			<field name="name">sync.logs.form</field>
+			<field name="model">sync.logs</field>
+			<field name="type">form</field>
+			<field name="arch" type="xml">
+			<form string="Sync Logs">						
+			<sheet>
+				<group colspan="4" >
+					<group>
+     				<field name="name"/>
+     				<field name="total_records"/>
+     				<field name="log_date"/>
+     				<field name="is_migrated"/>
+     				<field name="voucher_no" attrs="{'invisible': [('name', '!=', 'VOUCHERS')]}"/>
+     				</group>
+     				
+     				<group>
+     				<field name="object"/>
+     				<field name="no_imported"/>
+     				<field name="record_name"/>
+     				<field name="reason"/>
+     				<field name="voucher_type" attrs="{'invisible': [('name', '!=', 'VOUCHERS')]}"/>
+     				</group>
+  				</group>
+		</sheet>
+  		</form>
+		</field>
+	</record>
+	
+	<record model='ir.ui.view' id='syn_logs_tree'>
+            <field name="name">Sync Logs Tree</field>
+            <field name="model">sync.logs</field>
+            <field eval="12" name="priority"/>
+            <field name="arch" type="xml">                
+                <tree>
+                    <field name="name"/>
+					<field name="log_date"/> 
+					<field name="object"/>
+					<field name="record_name"/>
+					<field name="is_migrated"/>
+					<field name="reason" string="Failure Reason"/>
+                </tree>
+            </field>
+    </record>
+	
+	<!-- Sync Log SEARCH -->
+	<record model="ir.ui.view" id="search_syn_logs_filter">
+        <field name="name">Sync Logs Filter</field>
+        <field name="model">sync.logs</field>
+        <field name="arch" type="xml">
+            <search string="Sync Logs Filter">
+                <field name="name" string="Model Type" filter_domain="[('name','ilike',self)]"/>
+                <field name="record_name" string="Record Name" filter_domain="[('record_name','ilike',self)]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Record Name" domain="[]" context="{'group_by':'record_name'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+	
+	<!-- Sync Logs Form Action -->
+	<record id="sync_logs_action" model="ir.actions.act_window">
+	        <field name="name">Sync Logs</field>
+	        <field name="res_model">sync.logs</field>
+	        <field name="view_type">form</field>
+	        <field name="view_mode">tree,form</field>
+	        <field name="search_view_id" ref="search_syn_logs_filter"/>
+	        <field name="context"></field>        
+	        <field name="help" type="html">
+	          <p class="oe_view_nocontent_create">
+	            Click to setup a new Sync Logs Data. 
+	          </p>
+	        </field>
+	</record>
+	
+	<menuitem id="menu_logs" name="Odoo - TallyERP-9 Logs" parent="base.menu_administration" sequence="1"/>
+
+	<menuitem id="menu_odd_tally_logs" action="sync_logs_action" name="Sync Logs" parent="menu_logs" sequence="1"/>
+	
+	<!-- Sales Voucher -->
+        <record id="action_sale_receipt_inherit" model="ir.actions.act_window">
+            <field name="name">Voucher Receipts</field>
+            <field name="res_model">account.voucher</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="target">current</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to create a sale receipt.
+              </p><p>
+                When the sale receipt is confirmed, you can record the customer
+                payment related to this sales receipt.
+              </p>
+            </field>
+        </record>
+        
+		<menuitem id="menu_action_sale_receipt_inherit"
+	            action="action_sale_receipt_inherit"
+	            parent="account.menu_finance_receivables_documents"
+	            sequence="11"/>
+	
+	
+</odoo>

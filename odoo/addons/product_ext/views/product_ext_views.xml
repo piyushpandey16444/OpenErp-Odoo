@@ -1,0 +1,97 @@
+<?xml version="1.0"?>
+<odoo>
+
+<!-- view common to both template and product for adding sequence mode for lot -->
+        <record id="view_template_product_ext_form" model="ir.ui.view">
+            <field name="name">product.template.ext.form.inherit</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_form_view"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='company_id']" position="after">
+<!--               Himanshu: Added the help for  hsn_id 25-07-2020     -->
+                    <field name="hsn_id" help="Harmonized System Nomenclature/Services Accounting Code" attrs="{'invisible':[('hsn_disable', '=', True)]}"/>
+<!--               End Himanshu     -->
+                    <!--Aman 22/12/2020 Added field to disable hsn_code field-->
+                    <field name="hsn_disable"/>
+                    <!--Aman end-->
+                </xpath>
+
+                <xpath expr="//group[@name='properties']" position="before">
+                    <group string="Receivables" attrs="{'invisible':[('sale_ok', '=',False)]}">
+                        <field name="customer_tax_lines" attrs="{'invisible':[('hsn_disable', '=',True)]}">
+                        <tree editable="bottom" delete="0" create="0">
+                                                <field name="tax_id" domain="[('type_tax_use','=','sale')]" readonly="1" force_save="1"/>
+                                                <field name="tax_group_id" options="{'no_open': True, 'no_create': True}" readonly="1" force_save="1"/>
+                                                <field name="tax_percentage" domain="[('type_tax_use','=','sale')]" readonly="1" force_save="1"/>
+                                                <field name="label" force_save="1" readonly="1"/>
+                                                <field name="from_date" required="1" readonly="1" force_save="1"/>
+                                                <!--Aman 18/08/2020 Added 3 fields in product form receivables tree view for invoice account-->
+                                                <field name="income_account" options="{'no_open': True, 'no_create': True}" readonly="0"/>
+                                                <field name="income_account_export" options="{'no_open': True, 'no_create': True}" readonly="0"/>
+                                                <field name="expense_account" options="{'no_open': True, 'no_create': True}" readonly="0"/>
+                                                <!--Aman End-->
+                                                <field name="tax_master_detail_id" invisible="1"/>
+<!--                                                <field name="to_date"/>-->
+                                        </tree>
+                        </field>
+                        <field name="customer_tax_lines_dupl" attrs="{'invisible':[('hsn_disable', '=',False)]}">
+                        <tree editable="bottom">
+                                                <field name="tax_id" domain="[('type_tax_use','=','sale')]"/>
+                                                <field name="tax_group_id" options="{'no_open': True, 'no_create': True}"/>
+                                                <field name="tax_percentage" domain="[('type_tax_use','=','sale')]"/>
+                                                <field name="label"/>
+                                                <field name="from_date" required="1"/>
+                                                <!--Aman 18/08/2020 Added 3 fields in product form receivables tree view for invoice account-->
+                                                <field name="income_account" options="{'no_open': True, 'no_create': True}" readonly="0"/>
+                                                <field name="income_account_export" options="{'no_open': True, 'no_create': True}" readonly="0"/>
+                                                <field name="expense_account" options="{'no_open': True, 'no_create': True}" readonly="0"/>
+                                                <!--Aman End-->
+                                                <field name="tax_master_detail_id" invisible="1"/>
+<!--                                                <field name="to_date"/>-->
+                                        </tree>
+                        </field>
+                    </group>
+
+                    <group string="Payables" attrs="{'invisible':[('purchase_ok', '=',False)]}">
+                        <field name="vendor_tax_lines" attrs="{'invisible':[('hsn_disable', '=',True)]}">
+                         <tree editable="bottom"   delete="0" create="0">
+                                                <field name="tax_id" domain="[('type_tax_use','=','purchase')]" options="{'no_open': True, 'no_create':True}" readonly="1" force_save="1"/>
+                                                <field name="tax_group_id" options="{'no_open': True, 'no_create': True}" readonly="1" force_save="1"/>
+                                                <field name="tax_percentage" domain="[('type_tax_use','=','purchase')]" options="{'no_open': True, 'no_create': True}"  readonly="1" force_save="1"/>
+                                                <field name="label" options="{'no_open': True, 'no_create': True}"  readonly="1" force_save="1"/>
+                                                <field name="from_date" options="{'no_open': True, 'no_create': True}"  readonly="1" force_save="1"/>
+                                                <!--Aman 18/08/2020 Added 3 fields in product form payables tree view for invoice account-->
+                                                <field name="income_account" options="{'no_open': True, 'no_create': True}" readonly="0"/>
+                                                <field name="income_account_export" options="{'no_open': True, 'no_create': True}" readonly="0"/>
+                                                <field name="expense_account" options="{'no_open': True, 'no_create': True}" readonly="0"/>
+                                                <!--Aman End-->
+                                                <field name="tax_master_detail_id" options="{'no_open': True, 'no_create': True}" invisible="1"/>
+<!--                                                <field name="to_date"/>-->
+                                        </tree>
+                        </field>
+                        <field name="vendor_tax_lines_dupl" attrs="{'invisible':[('hsn_disable', '=',False)]}">
+                         <tree editable="bottom">
+                                                <field name="tax_id" domain="[('type_tax_use','=','purchase')]" options="{'no_open': True, 'no_create':True}"/>
+                                                <field name="tax_group_id" options="{'no_open': True, 'no_create': True}"/>
+                                                <field name="tax_percentage" domain="[('type_tax_use','=','purchase')]" options="{'no_open': True, 'no_create': True}"/>
+                                                <field name="label" options="{'no_open': True, 'no_create': True}"/>
+                                                <field name="from_date" options="{'no_open': True, 'no_create': True}"/>
+                                                <!--Aman 18/08/2020 Added 3 fields in product form payables tree view for invoice account-->
+                                                <field name="income_account" options="{'no_open': True, 'no_create': True}"/>
+                                                <field name="income_account_export" options="{'no_open': True, 'no_create': True}"/>
+                                                <field name="expense_account" options="{'no_open': True, 'no_create': True}"/>
+                                                <!--Aman End-->
+                                                <field name="tax_master_detail_id" options="{'no_open': True, 'no_create': True}" invisible="1"/>
+<!--                                                <field name="to_date"/>-->
+                                        </tree>
+                        </field>
+                    </group>
+
+
+                </xpath>
+
+            </field>
+        </record>
+
+</odoo>

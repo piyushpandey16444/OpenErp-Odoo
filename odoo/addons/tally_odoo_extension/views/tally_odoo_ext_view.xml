@@ -1,0 +1,303 @@
+<odoo>
+
+
+    <!-- Tally Product Categories -->
+
+    <record id="tally_product_category_tree_view" model="ir.ui.view">
+        <field name="name">tally.product.category.tree</field>
+        <field name="model">tally.product.category</field>
+        <field name="arch" type="xml">
+            <tree string="Tally Product Categories">
+                <field name="name"/>
+                <field name="tally_guid"/>
+                <field name="parent_id"/>
+                <field name="sequence_code"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="tally_product_category_form_view" model="ir.ui.view">
+        <field name="name">tally.product.category.form</field>
+        <field name="model">tally.product.category</field>
+        <field name="arch" type="xml">
+            <form string="Tally Product categories">
+                <group>
+                    <field name="name"/>
+                    <field name="tally_guid"/>
+                    <field name="parent_id"/>
+                    <field name="sequence_code"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="tally_product_category_form_action" model="ir.actions.act_window">
+        <field name="name">Tally Product Categories</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">tally.product.category</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="tally_product_category_tree_view"/>
+    </record>
+
+    <!-- Tally Product Template and Variants -->
+
+    <record id="tally_product_template_tree_view" model="ir.ui.view">
+        <field name="name">tally.product.template.tree</field>
+        <field name="model">tally.product.template</field>
+        <field name="arch" type="xml">
+            <tree string="Tally Products">
+                <field name="name"/>
+                <field name="guid"/>
+                <field name="categ_id"/>
+                <field name="sequence_code"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="tally_product_template_form_view" model="ir.ui.view">
+        <field name="name">tally.product.template.form</field>
+        <field name="model">tally.product.template</field>
+        <field name="arch" type="xml">
+            <form string="Tally Products">
+                <group>
+                    <field name="name"/>
+                    <field name="guid"/>
+                    <field name="categ_id"/>
+                    <field name="sequence_code"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="tally_product_template_form_action" model="ir.actions.act_window">
+        <field name="name">Tally Products</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">tally.product.template</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="tally_product_template_tree_view"/>
+    </record>
+
+    <!-- Tally Product UOM -->
+
+    <record id="tally_product_uom_tree_view" model="ir.ui.view">
+        <field name="name">tally.product.uom.tree</field>
+        <field name="model">tally.product.uom</field>
+        <field name="arch" type="xml">
+            <tree string="Tally Product UOM">
+                <field name="name"/>
+                <field name="guid"/>
+                <field name="uom_category"/>
+                <field name="uom_type"/>
+                <field name="uom_ratio"/>
+                <field name="uom_rounding_precision"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="tally_product_uom_form_view" model="ir.ui.view">
+        <field name="name">tally.product.uom.form</field>
+        <field name="model">tally.product.uom</field>
+        <field name="arch" type="xml">
+            <form string="Tally Product UOM">
+                <group>
+                    <field name="name"/>
+                    <field name="guid"/>
+                    <field name="uom_category"/>
+                    <field name="uom_type"/>
+                    <field name="uom_ratio"/>
+                    <field name="uom_rounding_precision"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="tally_product_uom_form_action" model="ir.actions.act_window">
+        <field name="name">Tally Products</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">tally.product.uom</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="tally_product_uom_tree_view"/>
+    </record>
+
+       <!-- Tally Account Type -->
+
+    <record id="tally_account_type_tree_view" model="ir.ui.view">
+        <field name="name">tally.account.type.tree</field>
+        <field name="model">tally.account.type</field>
+        <field name="arch" type="xml">
+            <tree string="Tally Account Type">
+                <field name="name"/>
+                <field name="guid"/>
+                <field name="company_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="tally_account_type_form_view" model="ir.ui.view">
+        <field name="name">tally.account.type.form</field>
+        <field name="model">tally.account.type</field>
+        <field name="arch" type="xml">
+            <form string="Tally Account Type">
+                <group>
+                    <field name="name" required="1"/>
+                    <field name="guid"/>
+                    <field name="company_id" readonly="1" force_save="1"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="tally_account_type_form_action" model="ir.actions.act_window">
+        <field name="name">Tally Account Type</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">tally.account.type</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="tally_account_type_tree_view"/>
+    </record>
+
+     <!-- Tally Company Type -->
+
+    <record id="tally_company_tree_view" model="ir.ui.view">
+        <field name="name">tally.company.tree</field>
+        <field name="model">tally.company</field>
+        <field name="arch" type="xml">
+            <tree string="Tally Company">
+                <field name="name"/>
+                <field name="guid"/>
+                <field name="company_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="tally_company_form_view" model="ir.ui.view">
+        <field name="name">tally.company.form</field>
+        <field name="model">tally.company</field>
+        <field name="arch" type="xml">
+            <form string="Tally Company">
+                <group>
+                    <field name="name" required="1"/>
+                    <field name="guid"/>
+                    <field name="company_id" readonly="1" force_save="1"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="tally_company_action" model="ir.actions.act_window">
+        <field name="name">Tally Company</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">tally.company</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="tally_company_tree_view"/>
+    </record>
+
+    <!-- Inherit Category View to link tally product category-->
+    <record id="product_category_tally_inherit_ext" model="ir.ui.view">
+        <field name="name">product..category.inherit</field>
+        <field name="model">product.category</field>
+        <field name="inherit_id" ref="product.product_category_form_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='parent_id']" position="after">
+                <field name="tally_category_id"/>
+            </xpath>
+            <xpath expr="//field[@name='property_valuation']" position="after">
+                <field name="stock_in_tally"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Inherit Product View to link tally product Template/Variant(Raw Material)-->
+    <record id="product_template_form_view_inherit_tally_ext" model="ir.ui.view">
+        <field name="name">product.template.supplier.form.inherit</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product_ext.view_template_product_ext_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='hsn_id']" position="after">
+                <field name="tally_product_id"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Inherit Product View to link tally product Template/Variant(Finish Good)-->
+<!--    <record id="product_template_finish_good_form_view_inherit_tally_ext" model="ir.ui.view">-->
+<!--        <field name="name">product.template.supplier.form.inherit</field>-->
+<!--        <field name="model">product.template</field>-->
+<!--        <field name="inherit_id" ref="product_extension.product_template_finished_goods_form_view" />-->
+<!--        <field name="arch" type="xml">-->
+<!--            <xpath expr="//field[@name='hsn_id']" position="after">-->
+<!--                <field name="tally_product_id"/>-->
+<!--            </xpath>-->
+<!--        </field>-->
+<!--    </record>-->
+
+    <!-- Inherit Product uom View to link tally product Template/Variant-->
+    <record id="product_uom_form_view_inherit_tally_ext" model="ir.ui.view">
+        <field name="name">product.uom.inherit</field>
+        <field name="model">product.uom</field>
+        <field name="inherit_id" ref="product.product_uom_form_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='rounding']" position="after">
+                <field name="tally_uom_id"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Inherit Partner View to link tally Customer and vendor-->
+    <record id="res_partner_form_customer_vendor_view_inherit_tally_ext" model="ir.ui.view">
+        <field name="name">res.partner.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='lang']" position="after">
+                <field name="tally_customer_id" attrs="{'invisible': [('supplier', '=', True)]}"/>
+                <field name="tally_vendor_id" attrs="{'invisible': [('supplier', '=', False)]}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Inherit Product uom View to link tally product Template/Variant-->
+    <record id="account_account_form_view_inherit_tally_ext" model="ir.ui.view">
+        <field name="name">account.account.inherit</field>
+        <field name="model">account.account</field>
+        <field name="inherit_id" ref="account.view_account_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='deprecated']" position="after">
+                <field name="tally_account_type_id"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Inherit Company View to link tally Company Template/Variant-->
+    <record id="res_company_form_view_inherit_tally_ext" model="ir.ui.view">
+        <field name="name">res.company.inherit</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='report_header']" position="after">
+                <field name="tally_migration"/>
+                <field name="tally_company_id" attrs="{'invisible': [('tally_migration', '=', False)],'required': [('tally_migration', '=', True)]}"/>
+                <field name="auto_import_tally" attrs="{'invisible': [('tally_migration', '=', False)]}"/>
+                <field name="auto_import_tally_url" attrs="{'invisible': [('tally_migration', '=', False)],'required':[('auto_import_tally','=', True)]}"/>
+            </xpath>
+        </field>
+    </record>
+
+<!--    &lt;!&ndash; Inherit Partner View to link tally Vendor&ndash;&gt;-->
+<!--    <record id="res_partner_form_vendor_view_inherit_tally_ext" model="ir.ui.view">-->
+<!--        <field name="name">res.partner.inherit</field>-->
+<!--        <field name="model">res.partner</field>-->
+<!--        <field name="inherit_id" ref="base.view_partner_form" />-->
+<!--        <field name="arch" type="xml">-->
+<!--            <xpath expr="//field[@name='lang']" position="after">-->
+<!--                <field name="tally_vendor_id"/>-->
+<!--            </xpath>-->
+<!--        </field>-->
+<!--    </record>-->
+
+
+</odoo>

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <data>
+        <record id="tax_master_form_view" model="ir.ui.view">
+            <field name="name">tax.master.form</field>
+            <field name="model">tax.master</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+            <form string="Tax Master" duplicate="0" delete="0">
+
+                <sheet string="Tax Master">
+                    <header>
+                     <button name="update_hsn_account" type="object" string="Update hsn Accounts" class="oe_highlight" groups="base.group_no_one"/>
+                    </header>
+<!--                    <div class="oe_button_box" name="button_box">-->
+<!--                            <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">-->
+<!--                                <field name="active" widget="boolean_button" options="{&quot;terminology&quot;: &quot;archive&quot;}"/>-->
+<!--                            </button>-->
+<!--                        </div>-->
+                    <group>
+                        <group>
+                            <field name="state" invisible="1"/>
+                            <field name="name" invisible="1"/>
+                            <field name="hsn_code" placeholder = "Enter HSN Code here" required="1" attrs="{'readonly': [('state','!=', 'draft')]}"/>
+                        </group>
+                        <group>
+                            <!--<field name="company_id" invisible="1"/>-->
+                            <field name="cr_date" attrs="{'readonly': [('state','!=', 'draft')]}"/>
+                            <field name="company_id" readonly="1" force_save="1"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="description" placeholder="Enter a Description here..." nolabel="1"/>
+                    </group>
+                    <notebook>
+                        <page string="Tax Details">
+                            <field name="state" invisible="1"/>
+                            <field name="tax_master_id" context="{'default_hsn_code': hsn_code}">
+                                <tree editable='top'>
+                                    <field name="hsn_code" invisible="1" force_save="1"/>
+<!--                                    <field name="tax_id" domain="[('type_tax_use','=','sale')]"/>-->
+                                    <field name="state" invisible="1"/>
+                                    <field name="tax_id" attrs="{'readonly': [('state','!=', 'draft')]}" options="{'no_create': True}"/>
+                                    <field name="tax_group_id" options="{'no_open': True, 'no_create': True}" readonly="1" force_save="1"/>
+                                    <field name="tax_percentage" domain="[('type_tax_use','=','sale')]" readonly="1" force_save="1"/>
+                                    <field name="type_tax_use" readonly="1" force_save="1"/>
+                                    <field name="label" readonly="1" force_save="1"/>
+                                    <field name="from_date" required="1" attrs="{'readonly': [('state','!=', 'draft')]}"/>
+                                    <field name="to_date" invisible="1"/>
+                                    <field name="inactive"/>
+                                    <field name="inactive_date" attrs="{'required': [('inactive','=', True)]}"/>
+                                    <field name="updated_date"/>
+                                    <!--Aman 18/08/2020 added 3 fields to enter income account and expense account in tree view-->
+                                    <field name="income_account" options="{'no_create': True}"/>
+                                    <field name="income_account_export" options="{'no_create': True}"/>
+                                    <field name="expense_account" options="{'no_create': True}"/>
+                                    <!--Aman end-->
+                                </tree>
+                            </field>
+                        </page>
+                 </notebook>
+                </sheet>
+            </form>
+            </field>
+        </record>
+    <record id="view_tax_master_tree" model="ir.ui.view">
+        <field name="name">tax.master.tree</field>
+        <field name="model">tax.master</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Tax Master" delete="0">
+	                    <!--<field name="tax_id" />-->
+                <field name="hsn_code" />
+                <!--<field name="tax_group_id"/>-->
+                <!--<field name="tax_percentage" />-->
+                <field name="cr_date"/>
+                <!--<field name="from_date"/>-->
+                <field name="company_id"/>
+            </tree>
+        </field>
+    </record>
+
+        <!-- Tax Master Search View By Pushkal on 16 April 19 : Starts Here -->
+
+        <record id="tax_master_search_ext_view" model="ir.ui.view">
+            <field name="name">tax.master.search</field>
+            <field name="model">tax.master</field>
+            <field name="arch" type="xml">
+                <search string="Tax master">
+                    <field name="name" string="General" filter_domain="['|','|',('hsn_code','ilike',self),('company_id','ilike',self),('create_date','ilike',self)]"/>
+                    <field name="hsn_code"/>
+                    <field name="company_id"/>
+                    <separator/>
+                    <group expand="0" string="Group By">
+                        <filter name="hsn_code" string="HSN" domain="[]" context="{'group_by':'hsn_code'}"/>
+                        <filter name="company_id" string="Company" domain="[]" context="{'group_by':'company_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        <!-- Tax Master Search View By Pushkal on 16 April 19 : Ends Here -->
+
+    <record id="view_tax_master_form" model="ir.actions.act_window">
+        <field name="name">Tax Master</field>
+        <field name="res_model">tax.master</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_tax_master_tree"/>
+    <!--<field name="act_window_id" ref="product_extension.tax_master_form_view"/>-->
+    </record>
+
+<!---->
+	<menuitem name="Tax Master" id="tax_master_menu" sequence="20"/>
+        <!--shubham moved tax master from purchase to invoicing-->
+    <menuitem name="Tax Master" id="sub_tax_master_menu" action="view_tax_master_form" parent="account.account_account_menu" sequence="25"/>
+    </data>
+</odoo>

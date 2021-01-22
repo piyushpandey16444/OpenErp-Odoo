@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_tally_product_category_stock_user,tally_product_category,model_tally_product_category,stock.group_stock_user,1,1,1,0
+access_tally_product_template_stock_user,tally_product_template,model_tally_product_template,stock.group_stock_user,1,1,1,0
+access_tally_product_uom_stock_user,tally_product_uom,model_tally_product_uom,stock.group_stock_user,1,1,1,0
+access_tally_account_account_user,tally_account_type,model_tally_account_type,stock.group_stock_user,1,1,1,0
+

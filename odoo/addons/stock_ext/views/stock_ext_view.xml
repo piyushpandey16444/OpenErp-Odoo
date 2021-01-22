@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+   <!--==================stock picking - Receipt================-->
+
+        <!--Gaurav 6/6/20 added inherit view to stock picking receipt-->
+
+    <record id="stock_picking_ext_inherit_form" model="ir.ui.view">
+            <field name="name">stock.picking.ext.form.inherit</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_reciept_picking_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//button[@name='action_picking_move_tree']" position="after">
+
+                <!--Gaurav 6/6/20 code for Vendor bills smart button-->
+                    <button name="action_view_invoice" type="object" class="oe_stat_button" icon="fa-pencil-square-o"
+                        attrs="{'invisible': [('state', 'not in', ('bill_pending', 'done'))]}">
+                        <field name="invoice_count" widget="statinfo" string="Vendor Bills"/>
+                            <field name='invoice_ids' invisible="1"/>
+                    </button>
+
+                  <!--code ends here-->
+                </xpath>
+                <!--Gaurav 6/6/20 code for  bills available-->
+                <xpath expr="//field[@name='scheduled_date']" position="after">
+                    <!--Jatin added code on 05-07-2020 for hiding bill avaialbale in case of job_work_challan-->
+
+                     <field name="bill_available"
+                            attrs="{'readonly': [('state', 'in', ('done','bill_pending','short_close'))], 'invisible':[('check_job_order','=', True)]}"/>
+                    <field name="check_job_order" invisible="1"/>
+                    <!--end jatin-->
+                    <field name="vendor_bill_ids" invisible="1" force_save="1"
+                                   widget="many2many_tags" options="{'no_create': True}"/>
+                    <field name="receipt_invoiced" invisible="1" force_save="1"/>
+                     <!--<field name="bill_number"-->
+                            <!--attrs="{'invisible': [('bill_available', '=', False)],-->
+                            <!--'required': [('bill_available', '=', True)]}"/>-->
+                     <!--<field name="bill_date"-->
+                            <!--attrs="{'invisible': [('bill_available', '=', False)],-->
+                            <!--'required': [('bill_available', '=', True)]}"/>-->
+
+                </xpath>
+                <!--Jatin added extra condition in invisble in case of job work challan 05-07-2020-->
+                <xpath expr="//field[@name='invoice_no']" position="attributes">
+                    <attribute name="attrs">{'invisible': ['|',('bill_available', '=', False),('check_job_order','=', True)],
+                            'required': [('bill_available', '=', True),('check_job_order','=', False)],
+                        'readonly': [('state', 'in', ('done','bill_pending','short_close'))]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='delivery_invoice_date']" position="attributes">
+                    <attribute name="attrs">{'invisible': ['|',('bill_available', '=', False),('check_job_order','=', True)],
+                            'required': [('bill_available', '=', True),('check_job_order','=', False)],
+                        'readonly': [('state', 'in', ('done','bill_pending','short_close'))]}</attribute>
+                </xpath>
+                <!--end Jatin-->
+
+
+            </field>
+    </record>
+    </data>
+</odoo>

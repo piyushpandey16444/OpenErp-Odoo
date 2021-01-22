@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<record id="view_test_connection_form" model="ir.ui.view">
+		<field name="name">test.connection.form</field>
+		<field name="model">test.connection</field>
+		<field name="type">form</field>
+		<field name="arch" type="xml">		
+		<form string="Migrate A Data From Tally Into Odoo">
+		
+				<group colspan="4" >
+					<group>
+     				<field name="url" colspan="4" width="400"/>
+     				<field name="company" colspan="4" attrs="{'required':['|',('ledgers','=',True),'|',('groups','=',True),'|',('vouchers','=',True)]}"/>
+     				<field name="tally_company" colspan="4" width="400" required="1"/>
+					<field name="tally_transfer_type" invisible="1"/>
+						<!-- <field name="daybook" colspan="4"/> -->
+     				</group>
+     				<separator string="Select Appropriate Option(s) To Migrate Data" colspan="4" />
+					<group colspan="4">
+						<separator string="Accounts..." colspan="4"/>
+						<group colspan="4" >
+							<field name="accounts_master" colspan="2" />
+							<field name="accounts_vouchers" colspan="2" />
+							<field name="vouchers" colspan="2" invisible="1" on_change="onchange_vouchers_option(vouchers)"/>
+							<field name="ledgers" colspan="2"  invisible="1" force_save="1" on_change="onchange_ledgers_option(ledgers)" />
+							<field name="groups" colspan="2"  invisible="1" force_save="1"/>
+							<field name="invoices" colspan="2" invisible="1" />
+							<field name="stock_journal" colspan="2" invisible="1"/>
+						</group>
+						<separator string="Products..." colspan="4" attrs="{'invisible':[('tally_transfer_type','=',True)]}"/>
+						<group colspan="4" attrs="{'invisible':[('tally_transfer_type','=',True)]}">
+							<!-- <field name="inventory_master" colspan="2" on_change="onchange_inventory_master_option(inventory_master)"/> -->
+							<field name="product_master" colspan="2" attrs="{'invisible':[('tally_transfer_type','=',True)]}"/>
+							<field name="stock_items" colspan="2"  invisible="1" on_change="onchange_stock_items_option(stock_items)"/>
+							<field name="stock_groups" colspan="2" invisible="1" force_save="1"/>
+							<field name="units" colspan="2" invisible="1" force_save="1"/>
+							<!-- <field name="godowns" colspan="2" attrs="{'readonly':[('stock_items','=',True)]}"/> -->
+						</group>
+						<!-- <separator string="Employees..." colspan="4"/>
+						<group colspan="4">
+							<field name="employees" colspan="2" />
+						</group> -->
+
+					</group>
+     			</group>
+<!--				<separator string="" colspan="4" />-->
+				<group colspan="4" col="6">
+<!--					<label string ="" colspan = "2" />-->
+					<button string="Cancel" class="btn-default" special="cancel"/>
+					<!-- <button  name="tally_main" class="oe_highlight" string="Migrate Data" type="object"/> -->
+					<button  name="xml_read" class="oe_highlight" string="Migrate Data To Tally" type="object"/>
+					<button  name="xml_create" class="oe_highlight" string="Migrate Data To Xml" type="object"/>
+				</group>
+			</form>
+		</field>
+		</record>
+		
+		<record id="action_test_connection_form" model="ir.actions.act_window">
+            <field name="name">Migrate Data To Tally </field>
+            <field name="res_model">test.connection</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+           <field name="view_id" ref="view_test_connection_form"/>
+           <field name="target">new</field>
+        </record>  
+
+	<!-- <menuitem id="menu_integrations" name="Odoo - Tally Integration" parent="base.menu_administration" sequence="0"/> -->
+
+	<menuitem id="menu_tally_connection_test" action="action_test_connection_form" name="Migrate Data To Tally" parent="menu_integration" sequence="1"/>
+
+	<record id="save_file_wizard_migrate_data_to_xml" model="ir.ui.view">
+		<field name="name">save.file.wizard.form.down</field>
+		<field name="model">save.file.wizard</field>
+		<field name="type">form</field>
+		<field name="arch" type="xml">
+		<form string="Migrate A Data From Tally Into Odoo">
+			<group>
+			<field name="to_download_master" string="Get Master"  invisible="1"/>
+			<field name="master_xml" filename="master_name" readonly="1" force_save="1"/>
+			<field name="voucher_xml" filename="voucher_name" readonly="1" force_save="1"/>
+			<field name="master_name" invisible="1"/>
+			<field name="voucher_name" invisible="1"/>
+			</group>
+		</form>
+		</field>
+	</record>
+</odoo>

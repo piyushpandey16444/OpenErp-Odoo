@@ -1,0 +1,847 @@
+@odoo-list-group-header-color: lighten(@odoo-brand-lightsecondary, 10%);
+
+.o_list_view {
+    position: relative;
+    cursor: pointer;
+    background-color: @odoo-view-background-color;
+    margin-bottom: 0px;
+
+    // Checkbox in editable list
+    // should be clickable and activate the row
+    &.o_editable_list .o_data_row:not(.o_selected_row) .o_data_cell {
+        .o_checkbox:not(.o_readonly_modifier) {
+            pointer-events: none;
+        }
+    }
+
+    &.table {
+        td, th {
+           vertical-align: middle;
+        }
+    }
+
+    thead {
+        color: @odoo-main-text-color;
+        border-bottom: 1px solid #cacaca;
+        > tr > th {
+            border-left: 1px solid #dfdfdf;
+            &:not(.o_column_sortable):hover {
+                cursor: default;
+            }
+        }
+    }
+
+    tfoot {
+        cursor: default;
+        color: @odoo-list-footer-color;
+        background-color: @odoo-list-footer-bg-color;
+        font-weight: @odoo-list-footer-font-weight;
+        border-top: 2px solid #cacaca;
+        border-bottom: 1px solid #cacaca;
+    }
+
+    .o_column_sortable {
+        position: relative;
+        .user-select(none);  // Prevent unwanted selection while sorting
+
+        &::after {
+            font-family: FontAwesome;
+            content: "\f0d7";
+            opacity: 0;
+        }
+        &:not(:empty)::after {
+            margin-left: 6px;
+            position: absolute;
+        }
+        &.o-sort-up {
+            cursor: n-resize;
+            &::after {
+                content: "\f0d7";
+            }
+        }
+        &.o-sort-down {
+            cursor: s-resize;
+            &::after {
+                content: "\f0d8";
+            }
+        }
+        &:hover::after {
+            opacity: 0.3;
+        }
+        &.o-sort-up, &.o-sort-down {
+            color: @headings-color;
+            &::after {
+                opacity: 1;
+            }
+        }
+    }
+
+    .o_list_record_selector, .o_list_record_delete, .o_handle_cell {
+        // width: 1px;  // to prevent the column to expand
+    }
+
+    .o_list_record_delete_btn {
+        padding: 0px;
+        // background-style: none;
+        border-style: none;
+        display: table-cell;
+    }
+
+    // Decoration of the row
+    .text-bf {
+        font-weight: bold;
+    }
+    .text-it {
+        font-style: italic;
+    }
+    .text-muted {
+        color: lighten(@text-muted, 10%);
+    }
+
+    // Grouped list views
+    tbody > tr.o_group_header {
+        height: 31px;
+
+        .o_group_name {
+            white-space: nowrap;
+        }
+        .o_group_pager {
+            cursor: text;
+            .user-select(none);
+            text-align: right;
+            padding-top: 0;
+            padding-bottom: 0;
+            .o_pager_previous, .o_pager_next {
+                background-color: @odoo-list-group-header-color;
+                &:hover {
+                    background-color: darken(@odoo-list-group-header-color, 10%);
+                }
+            }
+        }
+        > td.oe_number{
+            text-align: right;
+        }
+    }
+    tbody + tbody {
+        border-top: none;  // Override bootstrap for grouped list views
+    }
+
+    // Values styling
+    .o_list_number {
+        text-align: right;
+        white-space: nowrap;
+    }
+    .o_list_text {
+        white-space: pre-wrap;
+    }
+
+    .o_data_cell.o_invisible_modifier {
+        // Override display: none to keep table cells aligned. Note: cannot use
+        // 'initial' as it will force them to 'inline', not 'table-cell'.
+        display: table-cell!important;
+    }
+
+    //--------------------------------------------------------------------------
+    // Edition
+    //--------------------------------------------------------------------------
+    .o_data_row.o_selected_row > .o_data_cell:not(.o_readonly_modifier) {
+        position: relative;
+
+        // The in-edition elements will overflow other elements (the rows below,
+        // the content below the list view, ...). As those might be using
+        // position: relative, the in-edition elements have to define a z-index.
+        // Technically, creating a stacking context for a meaningful parent
+        // (maybe the .o_content) might be required for safety but we should
+        // consider this later if needed.
+        z-index: 1;
+
+        // The in-edition elements will overflow other elements (the rows below,
+        // the content below the list view, ...). As those might be using
+        // position: relative, the in-edition elements have to define a z-index.
+        // Technically, creating a stacking context for a meaningful parent
+        // (maybe the .o_content) might be required for safety but we should
+        // consider this later if needed.
+        z-index: 1;
+
+        // Field widgets override
+        > .o_field_widget {
+            .o-position-absolute(0, 0, auto, 0);
+            min-height: 100%;
+
+            &:not(.o_field_text) {
+                white-space: nowrap;
+            }
+
+            &.o_field_many2manytags > .badge {
+                &, > .o_badge_text {
+                    white-space: normal;
+                    max-width: 100%; // Fix a chrome bug where badge would not break on multiple lines
+                }
+            }
+        }
+        > .o_field_translate {
+            .o-position-absolute(0, 5px);
+            width: 16px; // to have some space on the right
+        }
+        .o_input {
+            padding: @table-condensed-cell-padding;
+            background-color: white;
+
+            .o_input {
+                padding: 0!important;
+            }
+        }
+        .o_input_dropdown {
+            min-height: 100%;
+        }
+        .o_field_monetary input {
+            width: 0;
+        }
+        .o_field_boolean {
+            position: relative!important;
+        }
+        .o_field_widget {
+            min-width: 0;
+        }
+        .o_input_dropdown, .o_datepicker {
+            > .o_input {
+                padding-right: 15px; // To prevent caret overlapping
+            }
+            > .o_dropdown_button, .o_datepicker_button {
+                .o-position-absolute(20%, 5px);
+            }
+        }
+        .o_field_widget > .o_external_button {
+            padding: 0;
+            background-color: inherit;
+            margin-left: 3px;
+        }
+        .o_row_handle {
+            visibility: hidden; // Hide sequence when editing
+        }
+        .o_field_boolean {
+            width: auto!important; // Override the width computed in JS (needed for Chrome)
+        }
+    }
+}
+
+// Buttons in ControlPanel
+.o_list_buttons {
+    .o_list_button_save, .o_list_button_discard {
+        display: none;
+    }
+    &.o-editing { // for list view editable
+        .o_list_button_add {
+            display: none
+        }
+        .o_list_button_save, .o_list_button_discard {
+            display: inline-block
+        }
+    }
+}
+
+// 31 Aug
+// Sticky Header & Footer in List View
+
+.o_view_manager_content {
+    >div {
+        >.table-responsive {
+            >.o_list_view {
+                thead tr:nth-child(1) th {
+                    position: sticky;
+                    top: 0;
+                    background-color: #EEEEEE;
+                    border: none;
+                    z-index: 9;
+                    border-bottom: 1px solid #cccccc;
+                    height: 33px;
+                }
+                tfoot tr:nth-child(1) td {
+                    position: sticky;
+                    bottom: 0;
+                    background-color: #82baff;
+                    height: 33px;
+                }
+            }
+        }
+    }
+}
+
+@sheet-margin: @sheet-padding;
+@chatter-side-width: 30%;
+
+.o_form_view {
+    // Form must fill 100% width in any size
+    .o_form_sheet_bg {
+
+        .o_form_sheet {
+            min-width: auto;
+            max-width: 100%;
+            margin: @sheet-margin;
+        }
+
+        @media (max-width: @screen-sm-max) {
+            padding: 0;
+
+            .o_form_sheet {
+                border: none;
+            }
+        }
+
+        .o_form_statusbar {
+            position: sticky;
+            top: 0;
+            z-index: 1;
+
+            .o-status-more > li > button {
+                border: 0;
+            }
+
+            .o_statusbar_buttons_container {
+                .o_statusbar_buttons_dropdown {
+                    height: 100%;
+
+                    >#dropdownMenuHeader {
+                        height: 100%;
+                        border-top: 0;
+                        border-bottom: 0;
+                        border-radius: 0;
+                    }
+                    >.dropdown-menu > li > button {
+                        width: 100%;
+                        border-radius: 0;
+                        border: 0;
+                    }
+                }
+
+                .o_statusbar_buttons_base > .o_statusbar_buttons {
+                    .o-flex-flow(row, wrap);
+                    >.btn {
+                        @o-statusbar-buttons-vmargin: 4px;
+                        min-height: @odoo-statusbar-height - 2 * @o-statusbar-buttons-vmargin;
+                        margin: @o-statusbar-buttons-vmargin 3px @o-statusbar-buttons-vmargin 0;
+                        // padding-top: 2px;
+                        // padding-bottom: 2px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media (min-width: 768px) {
+    .o_web_client > .o_main > .o_main_content > .o_content .table-responsive {
+        overflow-x: visible;
+    }
+}
+
+// Checkbox ==========================================
+div.o_checkbox {
+    display: inline-block;
+    position: relative;
+    vertical-align: sub;
+}
+ 
+div.o_checkbox > input {
+    width: 15px;
+    height: 15px;
+    margin: 0;
+    opacity: 0;
+    position: absolute;
+    top: auto;
+    left: auto;
+    bottom: auto;
+    right: auto;
+    cursor: pointer;
+}
+ 
+div.o_checkbox > input + span {
+    display: block;
+	width: 15px;
+    height: 15px;
+    border: 1px solid #8f8f8f;
+    background-color: white;
+}
+ 
+div.o_checkbox > input:checked + span {
+    background-repeat: no-repeat;
+    background-image: url(/web/static/src/img/checked.svg);
+    background-position: center center;
+}
+ 
+div.o_checkbox > input:disabled + span {
+    opacity: 0.7;
+    border: 1px solid #e2e2e0;
+}
+ 
+div.o_checkbox > input:focus + span {
+    outline: 1px solid @brand-primary;
+}
+
+.navbar-default .navbar-toggle {
+    border: none;
+}
+
+.navbar-default .navbar-toggle .icon-bar {
+    background-color: #ffffff
+}
+
+.o_chatter .o_chatter_topbar > .btn {
+    color: #0c2e5d;
+}
+
+.dropdown-menu {
+    border-radius: 0px;
+}
+// End
+
+// Devashish code start | On list view datatables for fixed header
+
+// Devashish 19 April code start for quot comparision page
+
+.allQuotMain_container {
+    width: 500px;
+    display: flex;
+}
+
+.quotComparision_txtnbr {
+    text-align: center;
+    border:1px solid #cccccc;
+    border-radius: 0px;
+    padding: 5px;
+}
+
+.quotComparision_tblthsml {
+    text-align: center !important;
+    width: 100px !important;
+    max-width: 100px !important;
+    min-width: 100px !important;
+}
+
+.quotComparision_tblthbig {
+    text-align: center !important;
+    width: 500px !important;
+    max-width: 500px !important;
+    min-width: 500px !important;
+}
+
+.quotComparision_tbltdsml {
+    text-align: center !important;
+    width: 100px !important;
+    max-width: 100px !important;
+    min-width: 100px !important;
+}
+
+
+.o_column_trash_space {
+    width: 40px !important;
+}
+
+.o_list_record_delete {
+    width: 15px !important;
+    text-align: center;
+}
+
+.o_column_chkbox_space {
+    width: 75px !important;
+}
+
+.o_column_chkbox_content {
+    width: 75px !important;
+}
+
+.o_list_record_selector {
+    width: 25px !important;
+    z-index: 6;
+}
+
+.serialheadbox {
+    width: 100px !important;
+    text-align: left !important;
+}
+
+.btn {
+    border-radius: 0px;
+}
+
+.ui-sortable-helper {
+    opacity: 0.7;filter: alpha(opacity=70);
+}
+.ui-sortable-placeholder { 
+    -moz-box-shadow: 4px 5px 4px #C6C6C6 inset;
+    -webkit-box-shadow: 4px 5px 4px #C6C6C6 inset;
+    box-shadow: 4px 5px 4px #C6C6C6 inset;
+    border-bottom: 1px solid #CCCCCC;
+    border-top: 1px solid #CCCCCC;
+    visibility: visible !important;
+    background: #EFEFEF !important; 
+    visibility: visible !important;
+}
+.ui-sortable-placeholder * { 
+    opacity: 0.0; visibility: hidden; 
+}
+
+.dataTables_wrapper .dataTables_filter input {
+    margin-left: 0.5em;
+}
+
+textarea {
+    resize: none;
+}
+
+.o_field_one2many .o_data_cell {
+    height: 30px;
+    word-break: break-word;
+}
+
+.o_editable_list {
+    border-right: 2px solid #cccccc;
+}
+
+.uparrow {
+    width: 12px;
+    clear: both;
+}
+
+.downarrow {
+    width: 12px;   
+    clear: both;
+}
+
+.oe_dropdown_menu {
+    border-radius: 0px;
+}
+
+.oe_dropdown_menu > li {
+    padding: 0px;
+}
+
+// Devashish code start 05 July
+input[type="radio"], input[type="checkbox"] {
+    outline: rgb(59, 153, 252) auto 5px;
+}
+
+.table-striped > tbody > tr:nth-of-type(even) {
+    background-color: #ffffff;
+}
+
+.o_list_view_ungrouped {
+    background: #eeeeee;
+}
+
+// devashish code start | code for custom scroll bar
+.o_editable_list > tbody {
+    height: 145px !important;
+    min-height: 145px !important;
+    max-height: 145px !important;
+    overflow: auto;
+}
+
+.o_editable_list > tbody::-webkit-scrollbar {
+    width: 3px;
+}
+   
+.o_editable_list > tbody::-webkit-scrollbar-thumb {
+    background: #666666;
+    border-radius: 10px;
+}
+  
+.o_editable_list > tbody::-webkit-scrollbar-track {
+    background: #dddddd;
+    border-radius: 10px;
+}
+
+.o_field_x2many_list > .table-responsive > .fixed_header > tbody {
+    height: 145px !important;
+    min-height: 145px !important;
+    max-height: 145px !important;
+    overflow: auto;
+}
+
+.o_field_x2many_list > .table-responsive > .fixed_header > tbody::-webkit-scrollbar {
+    width: 3px;
+}
+   
+.o_field_x2many_list > .table-responsive > .fixed_header > tbody::-webkit-scrollbar-thumb {
+    background: #666666;
+    border-radius: 10px;
+}
+  
+.o_field_x2many_list > .table-responsive > .fixed_header > tbody::-webkit-scrollbar-track {
+    background: #dddddd;
+    border-radius: 10px;
+}
+// End
+
+#AccessControlsList.o_list_view.table td, #AccessControlsList.o_list_view.table th {
+    word-break: break-word !important;
+    min-width: 50px !important;
+}
+
+.o_kanban_view .oe_kanban_card.oe_kanban_global_click {
+    cursor: pointer !important;    
+}
+
+.bold {
+    font-weight: bold !important;
+    font-size:14px !important;
+}
+
+.highlightrow {
+    background-color:#74b0ff !important;
+}
+
+.badge {
+    white-space: normal !important;
+}
+
+.o_control_panel > .breadcrumb > li {
+    font-weight: bold;
+}
+
+.o_notebook .o_list_view thead > tr > th {
+    position: sticky !important;
+    background-color: #eeeeee;
+    border: none;
+    // top: 35px;
+    border-bottom: 1px solid #cccccc;
+    height: 33px;
+}
+
+.modal-body .o_notebook .o_list_view thead > tr > th {
+    position: static;
+    background-color: #eeeeee;
+    border: none;
+    top: 0px;
+}
+
+.o_image_cell img {
+    width: 28px !important;
+    height: auto !important;
+}
+
+.breadcrum-list {
+    color: #333333 !important;
+    font-weight: bold;
+}
+
+.open > .dropdown-menu {
+    z-index: 999;
+}
+
+.dropup, .dropdown {
+    position: unset;
+}
+
+.o_field_x2many_list_row_add a {
+    color: #333333;
+}
+
+.add_an_item_display_none {
+    display: none !important;
+}
+
+.listview_btnactive {
+    background: #cccccc !important;
+    font-weight: bold !important;
+}
+
+// Indrajeet-27-11-2019 Issue and Return One2many backupdate functionality
+.bind_row_and_button {
+    background: #205ba8 ! important;
+    color: white !important;
+    width: 45px !important;
+}
+
+//abhishek-15-1-2019 used show a char field as button
+.field_as_button {
+    background: #205ba8 ! important;
+    color: white !important;
+    width: 45px !important;
+}
+
+
+// dashboard main checkbox css start
+.dropdown-control{
+    display: contents;
+    width: 100%;
+}
+
+.multiselect {
+    width: 200px;
+}
+  
+.selectBox {
+    position: relative;
+}
+  
+.selectBox select {
+    width: 100%;
+    font-weight: bold;
+    margin: 8px;
+    padding: 5px;
+}
+  
+.overSelect {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    cursor:pointer;
+}
+  
+#checkboxes {
+    display: none;
+    border: 1px #a9a9a9 solid;
+    margin: 8px;
+    padding: 5px;
+    width: 250px;
+    margin-top: -9px;
+    max-height:300px;
+    overflow: auto;
+}
+
+.oe_kanban_action_a {
+    text-transform: capitalize;
+}
+  
+#checkboxes label {
+    display: block;
+    font-weight:normal;
+}
+
+.nav-tabs.nav-justified > .active > a {
+    font-weight:bold !important;
+    color:#205ca8 !important;
+    font-size:14px !important;
+}
+
+.nav-tabs.nav-justified a {
+    color:#205ca8 !important;
+    font-size:14px !important;
+}
+
+.nav-tabs.nav-justified a:hover {
+    background:#ffffff !important;
+}
+
+.well {
+    background-color: #f5f5f5;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.00);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.00);
+}
+
+// End
+
+// userwise tree view
+
+.tree {
+    min-height:20px;
+    margin-bottom:20px;
+    padding:0px !important;
+    background:#ffffff !important;
+    border:none !important;
+    margin-top: 15px !important;
+}
+.tree>ul {
+    margin-left: -45px;
+}
+.tree li {
+    list-style-type:none;
+    margin:0;
+    padding:10px 5px 0 5px;
+    position:relative
+}
+.tree li::before, .tree li::after {
+    content:'';
+    left:-20px;
+    position:absolute;
+    right:auto
+}
+.tree li::before {
+    border-left:1px solid #999;
+    bottom:50px;
+    height:100%;
+    top:0;
+    width:1px
+}
+.tree li::after {
+    border-top:1px solid #999;
+    height:20px;
+    top:25px;
+    width:25px
+}
+.tree li span {
+    -moz-border-radius:0px;
+    -webkit-border-radius:0px;
+    border:1px solid #999;
+    border-radius:0px;
+    display:inline-block;
+    padding:3px 8px;
+    text-decoration:none
+}
+.tree li.parent_li>span {
+    cursor:pointer
+}
+.tree>ul>li::before, .tree>ul>li::after {
+    border:0
+}
+.tree li:last-child::before {
+    height:30px
+}
+.tree li.parent_li>span:hover, .tree li.parent_li>span:hover+ul li span {
+    background:#eee;
+    border:1px solid #94a0b4;
+    color:#000
+}
+// End
+
+// Devashish 20 March 2020 | Added css class
+
+.o_input {
+    border-radius: 0px;
+}
+
+.o_searchview {
+    border-radius: 0px !important;
+}
+
+.o_list_view tfoot {
+    color:#000000 !important;
+}
+
+.btn-group > .btn:first-child:not(:last-child):not(.dropdown-toggle) {
+    border-radius: 0px !important;
+}
+
+.btn-group > .btn:last-child:not(:first-child), .btn-group > .dropdown-toggle:not(:first-child) {
+    border-radius: 0px !important;
+}
+
+.close {
+    opacity:100;
+    color:#333333;
+}
+
+a {
+    color: #4d36af;
+}
+
+.o_form_view .o_form_uri:first-line {
+    color: #4d36af;
+}
+
+.nav-tabs > li > a {
+    border-radius: 0px !important;
+}
+
+.o_form_view .oe_button_box .oe_stat_button .o_button_icon {
+    color: #5138b7;
+}
+
+.o_hr_attendance_kiosk_mode {
+    border-radius: 0px !important;
+}
+
+// End

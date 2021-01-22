@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+		
+		<record id="view_tally_connection_form" model="ir.ui.view">
+		<field name="name">tally.connection.form</field>
+		<field name="model">tally.connection</field>
+		<field name="type">form</field>
+		<field name="arch" type="xml">
+			<form string="Migrate A Data From Tally Into Odoo">
+				<group colspan="4" >
+					<group>
+     				<field name="url" colspan="4" width="400"/>
+     				<field name="company" colspan="4" attrs="{'required':['|',('ledgers','=',True),'|',('groups','=',True),'|',('vouchers','=',True)]}"/>
+     				<field name="daybook" colspan="4" attrs="{'required':[('vouchers','=',True)]}" invisible="1"/>
+     				</group>
+     				<separator string="Select Appropriate Option(s) To Migrate Data" colspan="4" />
+					<group colspan="4">
+						<separator string="Accounts..." colspan="4"/>
+						<group colspan="4" col="6">
+							<field name="vouchers" colspan="2"/>
+							<field name="ledgers" colspan="2" attrs="{'readonly':[('vouchers','=',True)]}"/>
+							<field name="groups" colspan="2" attrs="{'readonly':[('ledgers','=',True)]}"/>
+						</group>
+						<separator string="Products..." colspan="4"/>
+						<group colspan="4" col="6">
+							<!-- <field name="inventory_master" colspan="2" on_change="onchange_inventory_master_option(inventory_master)"/> -->  
+							<field name="stock_items" colspan="2"  on_change="onchange_stock_items_option(stock_items)"/>
+							<field name="stock_groups" colspan="2" attrs="{'readonly':[('stock_items','=',True)]}"/>
+							<field name="units" colspan="2" attrs="{'readonly':[('stock_items','=',True)]}"/>
+<!--							<field name="godowns" colspan="2" attrs="{'readonly':[('stock_items','=',True)]}"/>-->
+						</group>
+						<!-- <separator string="Employees..." colspan="4"/>
+						<group colspan="4">
+							<field name="employees" colspan="2" />
+						</group> -->
+						
+					</group>
+     			</group>
+				<separator string="" colspan="4" />
+				<group colspan="4">
+					<label string ="" colspan = "2" />
+					<button string="Cancel" class="btn-default" special="cancel"/>
+					<button  name="tally_main" class="oe_highlight" string="Migrate Data" type="object"/>
+				</group>
+			</form>
+		</field>
+	</record>
+
+
+    <record id="action_tally_connection_form" model="ir.actions.act_window">
+            <field name="name">Import Data To Odoo11</field>
+            <field name="res_model">tally.connection</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+           <field name="view_id" ref="view_tally_connection_form"/>
+           <field name="target">new</field>
+           <field name="context">{'model': 'tally.connection'}</field>
+        </record>  
+
+	<menuitem id="menu_integration" name="Odoo - TallyERP-9 Integration" parent="base.menu_administration" sequence="2"/>
+
+	<menuitem id="menu_tally_connection" action="action_tally_connection_form" name="Import Data To Odoo" parent="menu_integration" sequence="1"/>
+	
+	<!-- RES PARTNER Inherit -->
+	<record id="view_partner_form" model="ir.ui.view">
+            <field name="name">res.partner.form</field>
+            <field name="model">res.partner</field>	
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+	            <xpath expr="//field[@name='ref']" position="after">
+	            		<field name="from_tally" readonly="1"/>
+	            </xpath>
+            </field>
+    </record>
+    
+    <!-- Account Move -->
+    <record id="view_move_formInherit" model="ir.ui.view">
+            <field name="name">account.move.form</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+            <xpath expr="//field[@name='journal_id']" position="after">
+            		<field name="from_tally" readonly="1"/>
+            </xpath>
+            <xpath expr="//field[@name='narration']" position="before">
+            		<group>
+            		<field name="tally_guid" readonly="1"/>
+            		</group>
+            </xpath>
+            </field>
+   </record>
+   
+   <!--Sales Account Voucher Inherit -->
+   <record model="ir.ui.view" id="view_sale_receipt_form">
+            <field name="name">account.voucher.sale.form</field>
+            <field name="model">account.voucher</field>
+            <field name="inherit_id" ref="account_voucher.view_sale_receipt_form"/>
+            <field name="arch" type="xml">
+			<xpath expr="//field[@name='move_id']" position="after">
+	            		<field name="from_tally" readonly="1"/>
+	            		<field name="tally_guid" readonly="1"/>
+	            </xpath>
+            </field>
+   </record>
+   
+   <!--  Purchase Vouchers -->
+     <record model="ir.ui.view" id="view_purchase_receipt_form">
+         <field name="name">account.voucher.purchase.form</field>
+         <field name="model">account.voucher</field>
+         <field name="inherit_id" ref="account_voucher.view_purchase_receipt_form"/>
+         <field name="arch" type="xml">
+			<xpath expr="//field[@name='move_id']" position="after">
+				<field name="from_tally" readonly="1"/>
+				<field name="tally_guid" readonly="1"/>
+			</xpath>
+         </field>
+   </record>
+   
+</odoo>

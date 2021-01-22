@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+	     <!--Schedular for fetching data from SQL server-->
+         <record forcecreate="True" id="login_logout_schedular" model="ir.cron">
+                    <field name="name">Login/out scheduler</field>
+                    <field name="model_id" ref="purchase.model_res_users"/>
+                    <field name="state">code</field>
+                    <field name="code">model.log_out_session()</field>
+                    <field name="user_id" ref="base.user_root"/>
+                    <field name="interval_number">1</field>
+                    <field name="interval_type">minutes</field>
+                    <field name="active">True</field>
+                    <field name="numbercall">-1</field>
+                    <field name="priority">0</field>
+                    <field eval="True" name="doall"/>
+         </record>
+    </data>
+</odoo>

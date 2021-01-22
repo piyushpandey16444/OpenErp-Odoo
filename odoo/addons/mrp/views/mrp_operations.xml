@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Operations -->
+        <record id="mrp_operation_tree_view" model="ir.ui.view">
+            <field name="name">mrp.operation.tree</field>
+            <field name="model">mrp.operation</field>
+            <field name="arch" type="xml">
+                <tree string="Routing Work Centers">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="workcenter_id" widget="many2many_tags"/>
+                    <field name="time_cycle" widget="float_time"/>
+                    <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company"/>
+                </tree>
+            </field>
+        </record>
+        <record id="mrp_operation_form_view" model="ir.ui.view">
+            <field name="name">mrp.operation.form</field>
+            <field name="model">mrp.operation</field>
+            <field name="arch" type="xml">
+                <form string="Routing Work Centers">
+                    <sheet>
+                        <group>
+                            <group name="description">
+                                <field name="name"/>
+                                <field name="workcenter_id" widget="many2many_tags" options="{'no_create_edit': True}"/>
+                                <field name="company_id" readonly="1" options="{'no_create': True}" groups="base.group_multi_company"/>
+                                <field name="sequence" groups="base.group_no_one"/>
+                            </group><group name="workorder">
+                                <field name="workorder_count" invisible="1"/>
+                                <field name="time_mode" widget="radio"/>
+                                <label for="time_mode_batch" attrs="{'invisible': [('time_mode', '=', 'manual')]}"/>
+                                <div attrs="{'invisible': [('time_mode', '=', 'manual')]}">
+                                    last
+                                    <field name="time_mode_batch" class="oe_inline"/>
+                                    work orders
+                                </div>
+                                <label for="time_cycle_manual" attrs="{'invisible': [('time_mode', '=', 'auto'), ('workorder_count', '!=' , 0)]}" string="Default Duration"/>
+                                <div attrs="{'invisible':  [('time_mode', '=', 'auto'), ('workorder_count', '!=' , 0)]}">
+                                    <field name="time_cycle_manual" widget="float_time" class="oe_inline"/> minutes
+                                </div>
+                                <field name="time_cycle" invisible="1"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Description">
+                                <field name="note"/>
+                            </page>
+                            <page string="Work Sheet">
+                                <field name="worksheet" widget="pdf_viewer"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="mrp_operation_action" model="ir.actions.act_window">
+            <field name="name">Operations</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">mrp.operation</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click here to create a new Routing.
+              </p><p>
+                Routings define the successive operations that need to be
+                done to realize a Manufacturing Order. Each operation from
+                a Routing is done at a specific Work Center and has a specific duration.
+              </p>
+            </field>
+        </record>
+        <menuitem id="menu_mrp_operation_action"
+            action="mrp_operation_action"
+            parent="menu_mrp_bom"
+            sequence="13"/>
+
+    </data>
+</odoo>

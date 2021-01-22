@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+            <!-- =============================RFQ================================  -->
+    <record id="view_request_for_quotation_form" model="ir.ui.view">
+        <field name="name">request.for.quotation.form</field>
+        <field name="model">request.for.quotation</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="RFQ" duplicate="0" delete="0">
+                <header>
+                    <button name="action_rfq_send" string="Send RFQ by Email" type="object" attrs="{'invisible': [('rfq_state', 'not in', 'draft')]}" class="oe_highlight" context="{'send_rfq':True}"/>
+                    <button name="button_confirm" string="Confirm Order" type="object" class="oe_highlight" help="Create Purchase Order against this RFQ" attrs="{'invisible':[('rfq_state','not in', ('quo', 'partial_quo', 'purchase'))]}"/>
+                    <button name="action_sent_for_quotation" string="Send to Quotation" type="object"  class="oe_highlight" attrs="{'invisible':[('rfq_state','not in',('draft', 'sent', 'partial_quof'))]}"/>
+                    <button name="button_cancel" attrs="{'invisible': [('rfq_state', 'in', ('purchase', 'partial_purchase'))]}" string="Cancel" type="object" />
+                    <field name="rfq_state" widget="statusbar" statusbar_visible="draft,sent,unawarded" readonly="1"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="order_type"/>
+                            <!--Aman 25/07/2020 added rest_vend for making partner_id as readonly field-->
+                            <field name="partner_id" attrs="{'readonly': ['|',('rest_vend','=',True),('rfq_state', 'in', ('cancel', 'unawarded'))]}" required="1" context="{'search_default_supplier':1, 'default_supplier':1, 'default_customer':0}"
+                                   domain="[('supplier','=',True),('parent_id','=',False)]" force_save="1"/>
+                            <field name="currency_id" readonly="1" attrs="{'readonly': [('rfq_state', 'in', ('cancel', 'unawarded'))]}" groups="base.group_multi_currency"/>
+                        </group>
+                        <group>
+                            <field name="rfq_date" readonly="1"/>
+                            <!--Aman 24/07/2020 added options so that user cannot create and edit rfq from here
+                             also added draft and sent states so that records with RFQ and RFQ sent states should
+                             also be visible in drop down-->
+                            <field name="reference_rfq" options="{'no_create': True, 'no_create_edit': True, 'no_open':True}" attrs="{'readonly': [('rfq_state', 'not in', 'draft')]}" domain="[('company_id','=',company_id), ('rfq_state', 'in', ('quo', 'partial_quo', 'draft', 'sent'))]"/>
+                            <!--Aman end-->
+                            <field name="company_id" invisible="1"/>
+                            <field name="rest_vend" invisible="1" force_save="1"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Products" name="rfq_line_ids" >
+                            <!--<group string="RFQ Lines">-->
+                                <field name="rfq_line_ids" attrs="{'readonly':[('rfq_state','in',('done', 'cancel', 'unawarded', 'purchase'))]}">
+                                    <tree editable="bottom">
+                                        <field name="currency_id" invisible="1"/>
+                                        <field name="id" invisible="1"/>
+                                        <field name="rfq_state" invisible="1"/>
+                                        <field name="company_id" invisible="1"/>
+                                        <!-- Aman 24/07/2020 added purchase_ok and type service in the domain so that user can select product
+                                        with type service and can be purchased(Checked)-->
+                                        <field name="product_id" domain="[('purchase_ok','=',True),('type', 'in', ('consu', 'service', 'product'))]" forcesave="1"  attrs="{'readonly': [('rfq_state', 'in', ('purchase', 'done', 'cancel'))]}" context="{'partner_id':parent.partner_id, 'quantity':product_qty,'uom':product_uom, 'company_id': parent.company_id}" force_save="1"/>
+                                        <!-- Aman End-->
+                                        <!--salman add a hsn_id field -->
+                                        <field name='hsn_id' readonly="1" force_save="1"/>
+                                        <!--salman end-->
+                                        <field name="name" attrs="{'readonly':[('rfq_state','in', 'purchase')]}"/>
+                                        <field name="rfq_id" invisible="1"/>
+                                        <field name="ref_rfq_line_id" invisible="1"/>
+                                        <field name="rfq_line_id" invisible="1"/>
+                                        <field name="ref_rfq_line_id" invisible="1"/>
+                                         <field name="product_qty" force_save="1" attrs="{'readonly':[('rfq_state','in', 'purchase')]}" context="{'partner_id':parent.partner_id, 'quantity':product_qty,'uom':product_uom, 'company_id': parent.company_id}"/>
+                                         <field name="qty_ordered"/>
+                                         <field name="total_qty_ordered"/>
+                                         <field name="total_qty_ordered_hidden" invisible="1"/>
+                                        <field name="price_unit" />
+                                        <field name="discount" />
+                                         <!--Gaurav 14/3/20 add check register for tax-->
+                                        <field name="product_uom" groups="product.group_uom" attrs="{'readonly': [('rfq_state', 'in', ('purchase', 'done', 'cancel'))]}" force_save="1"/>
+                                        <field name="taxes_id" widget="many2many_tags" attrs="{'readonly':[('rfq_state','=','purchase')]}" domain="[('type_tax_use','=','purchase')]" context="{'default_type_tax_use': 'purchase'}"
+                                               options="{'no_create': True}"/>
+                                         <!--Gaurav ends-->
+                                        <field name="price_subtotal" widget="monetary"/>
+                                        <button name="get_po_action"
+                                           string="Last PO" type="object"
+                                           class="oe_highlight" help="Get last 5 order for this Product"/>
+                                    </tree>
+                                </field>
+                            <!--<group>-->
+                            <group>
+                                <field name="order_calculation_ids" nolabel="1" force_save="1" readonly="1">
+                                    <tree editable="bottom" create="0">
+                                        <field name="name" invisible="1"/>
+                                        <field name="rfq_id" invisible="1"/>
+                                        <field name="serial_no"/>
+                                        <field name="category"/>
+                                        <field name="label"/>
+                                        <field name="amount"/>
+                                        <field name="company_id" invisible="1"/>
+                                    </tree>
+                                </field>
+                            </group>
+                            <group class="oe_subtotal_footer oe_right">
+                                <field name="amount_untaxed" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                <field name="amount_tax" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                <div class="oe_subtotal_footer_separator oe_inline">
+                                    <label for="amount_total"/>
+                                </div>
+                                <field name="amount_total" nolabel="1" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            </group>
+                            <field name="notes" class="oe_inline" placeholder="Define your terms and conditions ..."/>
+                            <div class="oe_clear"/>
+                        </page>
+
+                        <page string="Notes">
+                            <group>
+                                <field name="remarks" />
+                                <field name="note" />
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+<!--RFQ TREE VIEW-->
+
+    <record id="view_request_for_quotation_tree" model="ir.ui.view">
+        <field name="name">request.for.quotation.tree</field>
+        <field name="model">request.for.quotation</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree decoration-bf="message_unread==True" decoration-muted="rfq_state=='cancel'" decoration-info="rfq_state in ('wait','confirmed')" string="RFQ">
+                <field name="message_unread" invisible="1"/>
+                <field name="name" string="Reference"/>
+                <field name="rfq_date"/>
+                <field name="partner_id"/>
+                <field name="origin" invisible="1"/>
+                <field name="order_type" invisible="1"/>
+                <field name="amount_untaxed" sum="Total Untaxed amount" string="Untaxed" widget="monetary"/>
+                <field name="amount_total" sum="Total amount" widget="monetary"/>
+                <field name="currency_id" invisible="1"/>
+                <field name="rfq_state"/>
+            </tree>
+        </field>
+    </record>
+
+<!--RFQ Search-->
+
+       <record id="view_request_for_quotation_search" model="ir.ui.view">
+        <field name="name">request.for.quotation.search</field>
+        <field name="model">request.for.quotation</field>
+        <field name="arch" type="xml">
+            <search string="Search RFQ">
+                <field name="name" string="Reference"/>
+                <field name="partner_id" operator="child_of"/>
+                <field name="product_id"/>
+                <field name="create_uid"/>
+                <filter name="draft" string="Quotations" domain="[('rfq_state','in',('draft','sent','quotation'))]"/>
+                <filter name="quotation" string="RFQ" domain="[('rfq_state','in',('confirm','done'))]"/>
+                <separator/>
+                <filter name="not_invoiced" string="Waiting Bills" domain="[('invoice_status','=', 'to invoice')]" help="Purchase orders that include lines not invoiced."/>
+                <filter name="invoiced" string="Bills Received" domain="[('invoice_status','=', 'invoiced')]" help="Purchase orders that have been invoiced."/>
+                <filter string="Unread Messages" name="message_needaction" domain="[('message_needaction','=',True)]"/>
+                <separator/>
+                <filter string="My Activities" name="activities_my"
+                    domain="[('activity_ids.user_id', '=', uid)]"/>
+                <separator/>
+                <filter string="Late Activities" name="activities_overdue"
+                    domain="[('activity_ids.date_deadline', '&lt;', context_today().strftime('%Y-%m-%d'))]"
+                    help="Show all records which has next action date is before today"/>
+                <filter string="Today Activities" name="activities_today"
+                    domain="[('activity_ids.date_deadline', '=', context_today().strftime('%Y-%m-%d'))]"/>
+                <filter string="Future Activities" name="activities_upcoming_all"
+                    domain="[('activity_ids.date_deadline', '&gt;', context_today().strftime('%Y-%m-%d'))
+                    ]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Vendor" domain="[]" context="{'group_by':'partner_id'}"/>
+                    <filter string="RFQ Date" domain="[]" context="{'group_by':'rfq_date'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+<!--ACTION FOR QUOTATION-->
+
+        <record id="action_request_for_quotation" model="ir.actions.act_window">
+        <field name="name">RFQ</field>
+        <field name="res_model">request.for.quotation</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_request_for_quotation_search"/>
+    </record>
+
+
+    <menuitem name="Request for Quotation" id="sub_menu_view_req_for_quot" action="action_request_for_quotation" parent="purchase.menu_procurement_management" sequence="5"/>
+<!-- ==================================RFQ============================== -->
+
+
+
+<!-- =============================RFQ Line Form================================ -->
+    <record id="view_request_for_quotation_line_form" model="ir.ui.view">
+        <field name="name">request.for.quotation.line.form</field>
+        <field name="model">request.for.quotation.line</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="RFQ Line">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="rfq_id"/>
+                            <field name="product_id"/>
+                            <field name="product_qty"/>
+                            <field name="price_unit"/>
+                        </group>
+                        <group>
+                            <field name="product_uom"/>
+                            <field name="taxes_id" widget="many2many_tags"/>
+                            <field name="price_subtotal"/>
+                            <field name="price_tax"/>
+                            <field name="price_total"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+<!-- =============================RFQ Line Form=================================  -->
+
+
+
+        <!--==================PO short close and amendment================-->
+
+        <!--Gaurav 5/6/20 added inherit view to add purchase order short close and amendment-->
+
+    <record id="purchase_order_form_ext_inherit_form" model="ir.ui.view">
+            <field name="name">purchase.order.ext.form.inherit</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//button[@name='action_view_invoice']" position="after">
+
+                <!--Gaurav 5/6/20 code for admendment button-->
+                    <button name="get_current_ammendmend_history" type="object" class="oe_stat_button" icon="fa-list-alt"
+                        attrs="{'invisible': [('state', 'in', ('draft'))]}">
+                        <field name="ammendmend_count" widget="statinfo" string="AMD History"/>
+                    </button>
+                  <!--code ends here-->
+                </xpath>
+
+                <xpath expr="//field[@name='date_order']" position="after">
+
+                    <field name="short_closed" />
+
+                </xpath>
+            </field>
+    </record>
+
+        <!--================== Gaurav end PO inherit form =====================-->
+
+        <!--================PO AMD====================-->
+
+        <record id="view_purchase_order_amd_form" model="ir.ui.view">
+            <field name="name">purchase.order.amd.form</field>
+            <field name="model">purchase.order.amd</field>
+            <field name="arch" type="xml">
+                <form string="Purchase Order Amendmend" create="false" edit="false">
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,sent,purchase" readonly="1"/>
+                </header>
+                <sheet>
+
+                    <group>
+                        <group>
+                            <field name="order_type" attrs="{'readonly': [('ref_rfq_line_id_check', '=', True)]}"/>
+                            <field name="check_order_line" invisible="1" force_save="1" />
+                            <field name="partner_id" context="{'search_default_supplier':1, 'default_supplier':1, 'default_customer':0}"
+                                   domain="[('supplier','=',True),('parent_id','=',False)]"
+                                    attrs="{'readonly': ['|', ('check_order_line', '=', True), ('ref_rfq_line_id_check', '=', True)]}"
+                                    force_save="1"/>
+                            <field name="partner_ref"/>
+                            <field name="currency_id" groups="base.group_multi_currency"/>
+                            <field name="is_shipped" invisible="1"/>
+                            <field name="check_registered" invisible="1" force_save="1"/>
+                        </group>
+                        <group>
+                            <field name="date_order" readonly="1" invisible="0"/>
+                            <field name="origin" invisible="1"/>
+                            <field name="company_id" invisible="1" groups="base.group_multi_company"/>
+                            <field name="date_rfq" invisible="1"/>
+                            <field name="reference_rfq_new" readonly="1" attrs="{'invisible': [('reference_rfq_new', '=', False)]}" domain="[('state', 'not in', ('purchase', 'cancel', 'unawarded')), ('company_id','=',company_id)]"/>
+                            <field name="ref_rfq_line_id_check" invisible="1"/>
+                            <field name="as_per_schedule" invisible="1"/>
+                            <field name="start_date" force_save="1" readonly="1" attrs="{'invisible': ['|', '&amp;', ('order_type', 'in', 'direct'), ('as_per_schedule','=',False)]}"/>
+                            <field name="end_date" force_save="1" attrs="{'readonly': ['|',('as_per_schedule','=',False), ('order_type','not in','direct')], 'invisible': ['|', '&amp;', ('order_type', 'in', 'direct'), ('as_per_schedule','=',False)]}"/>
+
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Products">
+                            <field name="order_amd_line" attrs="{'readonly': [('state', 'in', ('done', 'cancel'))]}" editable="bottom">
+                                 <tree string="Purchase Order Lines" editable="bottom">
+                                    <field name="currency_id" invisible="1"/>
+                                    <field name="state" invisible="1"/>
+                                    <field name="invoice_lines" invisible="1"/>
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="product_id" forcesave="1"  attrs="{'readonly': [('state', 'in', ('purchase', 'to approve','done', 'cancel'))]}" context="{'partner_id':parent.partner_id, 'quantity':product_qty,'uom':product_uom, 'company_id': parent.company_id}" force_save="1"/>
+                                    <field name="name"/>
+                                    <field name="rfq_id" invisible="1"/>
+                                    <field name="ref_rfq_line_id" invisible="1"/>
+                                    <field name="move_dest_ids" invisible="1"/>
+                                    <field name="date_planned"/>
+                                    <field name="company_id" invisible="1" groups="base.group_multi_company" options="{'no_create': True}"/>
+                                     <field name="account_analytic_id" context="{'default_partner_id':parent.partner_id}" groups="purchase.group_analytic_accounting"/>
+                                    <field name="analytic_tag_ids" groups="purchase.group_analytic_accounting" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                                     <field name="qty_ordered" invisible="context.get('show_purchase', False)"/>
+                                     <field name="product_qty"/>
+                                      <field name="qty_invoiced" invisible="not context.get('show_purchase', True)"/>
+                                    <field name="product_uom" groups="product.group_uom" attrs="{'readonly': [('state', 'in', ('purchase', 'done', 'cancel'))]}" force_save="1"/>
+                                    <field name="price_unit" attrs="{'readonly': [('invoice_lines', '!=', [])]}"/>
+                                    <field name="taxes_id" widget="many2many_tags" domain="[('type_tax_use','=','purchase')]" context="{'default_type_tax_use': 'purchase'}"
+                                           options="{'no_create': True}" attrs="{'column_invisible':[('parent.check_registered','=',True)]}"
+                                    invisible="1"/>
+                                    <field name="price_subtotal" widget="monetary"/>
+                                </tree>
+                            </field>
+                        </page>
+
+                        <page string="Deliveries &amp; Invoices">
+                            <group>
+                                <group>
+                                    <label for="date_planned"/>
+                                    <div>
+                                        <field name="date_planned" attrs="{'readonly': [('state', 'not in', ('draft', 'sent'))]}"/>
+                                        <button name="action_set_date_planned" type="object"
+                                            states="draft,sent"
+                                            string="Set date to all order lines"
+                                            help="This changes the scheduled date of all order lines to the given date"
+                                            class="fa fa-calendar o_icon_button oe_edit_only"/>
+                                    </div>
+                                    <field name="picking_type_id" domain="[('code','=','incoming')]" options="{'no_create': True}" groups="stock.group_stock_multi_locations"/>
+                                    <field name="dest_address_id" groups="stock.group_stock_multi_locations" attrs="{'invisible': [('default_location_dest_id_usage', '!=', 'customer')], 'required': [('default_location_dest_id_usage', '=', 'customer')]}"/>
+                                    <field name="default_location_dest_id_usage" invisible="1"/>
+                                    <field name="incoterm_id"/>
+                                </group>
+                                <group>
+                                    <field name="invoice_status"/>
+                                    <field name="payment_term_id" options="{'no_open': True, 'no_create': True}" attrs="{'readonly': ['|', ('invoice_status','=', 'invoiced'), ('state', '=', 'done')]}"/>
+                                    <field name="fiscal_position_id" invisible="1" options="{'no_create': True}" attrs="{'readonly': ['|', ('invoice_status','=', 'invoiced'), ('state', '=', 'done')]}"/>
+                                    <field name="date_approve" groups="base.group_no_one"/>
+                                </group>
+                            </group>
+                        </page>
+
+                    </notebook>
+                </sheet>
+                </form>
+            </field>
+        </record>
+
+
+    <record model="ir.ui.view" id="view_purchase_order_amd_tree">
+        <field name="name">purchase.order.amd.tree</field>
+        <field name="model">purchase.order.amd</field>
+        <field name="arch" type="xml">
+            <tree decoration-bf="message_needaction==True" decoration-muted="state == 'cancel'"
+                  string="Purchase Order Amendmend" delete="0"
+                  create="false" edit="false">
+                <field name="message_needaction" invisible="1"/>
+                <field name="name"/>
+                <field name="purchase_id"/>
+                <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
+                <field name="date_planned"/>
+                <field name="origin" invisible="1"/>
+                <field name="state"/>
+            </tree>
+      </field>
+    </record>
+
+    <!--<record id="view_purchase_requisition_amd_filter" model="ir.ui.view">-->
+        <!--<field name="name">purchase.requisition.amd.list.select</field>-->
+        <!--<field name="model">purchase.requisition.amd</field>-->
+        <!--<field name="arch" type="xml">-->
+            <!--<search string="Search Purchase Agreements Amendment">-->
+                <!--<field name="name" string="General" filter_domain="['|','|','|','|','|', ('name','ilike',self), ('origin','ilike',self),('type_id','ilike',self),('assigned_id','ilike',self),('product_rel_id','ilike',self),('state','ilike',self)]"/>-->
+                <!--<field name="origin"/>-->
+                <!--<field name="type_id"/>-->
+                <!--<field name="product_rel_id"/>-->
+                <!--<separator/>-->
+                <!--<group expand="0" string="Group By">-->
+                    <!--<filter string="Assigned To" domain="[]" context="{'group_by':'assigned_id'}"/>-->
+                    <!--<filter string="Source" domain="[]" context="{'group_by':'origin'}"/>-->
+                    <!--<filter string="Status" domain="[]" context="{'group_by':'state'}"/>-->
+                    <!--<filter string="Agreement Deadline" domain="[]" context="{'group_by':'date_end'}"/>-->
+                <!--</group>-->
+            <!--</search>-->
+        <!--</field>-->
+    <!--</record>-->
+
+    <record model="ir.actions.act_window" id="action_purchase_order_amd">
+        <field name="name">Purchase Order Amendmend</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">purchase.order.amd</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{}</field>
+        <!--<field name="search_view_id" ref="view_purchase_requisition_amd_filter"/>-->
+    </record>
+
+        <!--=============Gaurav end PO amd===============-->
+
+
+    </data>
+</odoo>
+

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!--code for inheriting the process name fields in the proccess master of the manufacting-->
+
+        <!--<record model="ir.ui.view" id="mrp_routing_form_view_inherit">-->
+            <!--<field name="name">mrp.routing.inherit</field>-->
+            <!--<field name="model">routing</field>-->
+            <!--<field name="inherit_id" ref="mrp.mrp_routing_form_view"/>-->
+            <!--<field name="arch" type="xml">-->
+                <!--<xpath expr="//field[@name='alias_name']" position="before">-->
+                    <!--<field name="process_name"/>-->
+                <!--</xpath>-->
+            <!--</field>-->
+        <!--</record>-->
+
+        <!--code ends here-->
+
+        <!-- Routings -->
+        <record id="routing_form_view" model="ir.ui.view">
+            <field name="name">routing.form</field>
+            <field name="model">routing</field>
+            <field name="arch" type="xml">
+                <form string="Process Master">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="process_name"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+
+        <record id="routing_tree_view" model="ir.ui.view">
+            <field name="name">routing.tree</field>
+            <field name="model">routing</field>
+            <field name="arch" type="xml">
+                <tree string="Routing">
+                    <field name="process_name"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="routing_action" model="ir.actions.act_window">
+            <field name="name">Routings</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">routing</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,kanban,form</field>
+            <field name="view_id" ref="routing_tree_view"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click here to create a new Routing.
+              </p><p>
+                Routings define the successive operations that need to be
+                done to realize a Manufacturing Order. Each operation from
+                a Routing is done at a specific Work Center and has a specific duration.
+              </p>
+            </field>
+        </record>
+        <menuitem id="menu_routing_action"
+          action="routing_action"
+          parent="stock.menu_stock_warehouse_mgmt"
+          name="Process Master"
+          sequence="16"/>
+    </data>
+</odoo>

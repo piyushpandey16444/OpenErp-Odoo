@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Routings -->
+        <record id="mrp_routing_form_view1" model="ir.ui.view">
+            <field name="name">mrp.routing.form</field>
+            <field name="model">mrp.routing</field>
+            <field name="arch" type="xml">
+                <form string="Process Master" delete="0" duplicate="0">
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+
+                            <!--shubham hided this widget-->
+                            <!--<button name="%(action_mrp_routing_time)d" type="action" class="oe_stat_button" icon="fa-clock-o">-->
+                                <!--<div class="o_form_field o_stat_info">-->
+                                    <!--<span class="o_stat_text">Time<br/> Analysis</span>-->
+                                <!--</div>-->
+                            <!--</button>-->
+<!--                            <button class="oe_stat_button" name="toggle_active" type="object" icon="fa-archive">-->
+<!--                                <field name="active" widget="boolean_button"-->
+<!--                                    options='{"terminology": "archive"}'/>-->
+<!--                            </button>-->
+                        </div>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="code"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="name" required="1" attrs="{'readonly': [('state', '=', 'done')]}"/>
+                                <field name="alias_name" required="0" attrs="{'readonly': [('state', '=', 'done')]}"/>
+                                <!--shubham-->
+                                <!--<field name="operation_name"/>-->
+                                <field name="description"/>
+
+<!--                                <field name="inprocess_inspection"/>-->
+<!--                                <field name="is_external"/>-->
+<!--                                <field name="is_internal"/>-->
+
+
+
+                                <!--<field name="before" attrs="{'invisible': [('inprocess_inspection', '=', False)]}"/>-->
+                                <!--<field name="after" attrs="{'invisible': [('inprocess_inspection', '=', False)]}"/>-->
+                                <!--<field name="in_process" attrs="{'invisible': [('inprocess_inspection', '=', False)]}"/>-->
+
+                            </group>
+<!--                            <group>-->
+<!--                            &lt;!&ndash;<field name="production_location"/>&ndash;&gt;-->
+
+
+<!--                                <field name="workorder_count" invisible="1"/>-->
+<!--                                <field name="time_mode" widget="radio"/>-->
+<!--                                <label for="time_mode_batch" attrs="{'invisible': [('time_mode', '=', 'manual')]}"/>-->
+<!--                                <div attrs="{'invisible': [('time_mode', '=', 'manual')]}">-->
+<!--                                    last-->
+<!--                                    <field name="time_mode_batch" class="oe_inline"/>-->
+<!--                                    work orders-->
+<!--                                </div>-->
+<!--                                <label for="time_cycle_manual" attrs="{'invisible': ['|',('time_mode', '=', 'auto'), ('workorder_count', '!=' , 0)]}" string="Default Duration"/>-->
+<!--                                <div attrs="{'invisible':  ['|',('time_mode', '=', 'auto'), ('workorder_count', '!=' , 0)]}">-->
+<!--                                    <field name="time_cycle_manual" widget="float_time" class="oe_inline"/> minutes-->
+<!--                                </div>-->
+<!--                                <field name="time_cycle" invisible="1"/>-->
+
+
+<!--                                &lt;!&ndash;<field name="location_id" groups="stock.group_adv_location"/>&ndash;&gt;-->
+<!--                                <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company" invisible="1"/>-->
+<!--                                <field name="before" attrs="{'invisible': [('inprocess_inspection', '=', False)]}"/>-->
+<!--                                <field name="after" attrs="{'invisible': [('inprocess_inspection', '=', False)]}"/>-->
+<!--                                <field name="in_process" attrs="{'invisible': [('inprocess_inspection', '=', False)]}"/>-->
+<!--                           </group>-->
+                        </group>
+<!--                        <notebook>-->
+<!--                            <page string="Work Center Operation">-->
+<!--                                &lt;!&ndash;<field name="operation_ids" ref='mrp_routing_workcenter_form_view1'/>&ndash;&gt;-->
+<!--                                <field name="operation_ids" context="{'default_is_internal': is_internal}" >-->
+<!--                                <tree string="Workcenter" editable="bottom">-->
+<!--                                    &lt;!&ndash;<field name="workcenter_id_many" widget="many2many_tags"/>&ndash;&gt;-->
+<!--                                    <field name="workcenter_id" attrs="{'required':[('is_internal', '=', True)]}"/>-->
+<!--                                    <field name="is_internal" invisible="1"/>-->
+<!--&lt;!&ndash;shubham hides this field&ndash;&gt;-->
+<!--                                    <field name="production_location" />-->
+<!--                                    <field name="time_cycle" />-->
+
+<!--                                </tree>-->
+<!--                            </field>-->
+
+<!--                            </page>-->
+<!--                            <page string="Notes">-->
+<!--                                <field name="note"/>-->
+<!--                            </page>-->
+
+<!--                             <page string="Work Sheet">-->
+<!--                                <field name="worksheet" widget="pdf_viewer"/>-->
+<!--                            </page>-->
+
+<!--&lt;!&ndash;checklist tab&ndash;&gt;-->
+<!--                             <page string="Checklist for Inprocess Inspection" attrs="{'invisible': [('inprocess_inspection', '=', False)]}">-->
+<!--                                <field name="checklist_ids">-->
+<!--                                <tree string="Checklist" editable="bottom">-->
+<!--                                    <field name="type" required="1"/>-->
+<!--                                    <field name="checklist_process" force_save = '1' required="1"/>-->
+
+<!--                                    <field name="inactive" force_save = '1'/>-->
+<!--                                    <field name="remarks" force_save = '1'/>-->
+<!--                                </tree>-->
+<!--                            </field>-->
+<!--                            </page>-->
+
+<!--                              <page string="User">-->
+<!--                                  <field name="user_line_ids"  context="{'default_is_internal': is_internal}">-->
+<!--                                  <tree string="User" editable="bottom">-->
+<!--                                      <field name="name" attrs="{'required':[('is_internal', '=', True)]}"/>-->
+<!--                                      <field name="workcenter_id" readonly="1" force_save="1" widget="many2many_tags"/>-->
+<!--                                      <field name="is_internal" invisible="1"/>-->
+<!--                                      <field name="resource_calendar_id"/>-->
+<!--                                      <field name="in_active" />-->
+<!--                                    </tree>-->
+<!--                                  </field>-->
+<!--                            </page>-->
+<!--                        </notebook>-->
+                    </sheet>
+
+                      <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+
+                </form>
+            </field>
+        </record>
+        <record id="mrp_routing_tree_view1" model="ir.ui.view">
+            <field name="name">mrp.routing.tree</field>
+            <field name="model">mrp.routing</field>
+            <field name="arch" type="xml">
+                <tree string="Process Master">
+                    <field name="code"/>
+                    <field name="name"/>
+                    <field name="description"/>
+                    <!--<field name="location_id" groups="stock.group_adv_location"/>-->
+                    <field name="company_id" groups="base.group_multi_company" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+        <record id="mrp_routing_search_view1" model="ir.ui.view">
+            <field name="name">mrp.routing.search</field>
+            <field name="model">mrp.routing</field>
+            <field name="arch" type="xml">
+                <search string="Process Master">
+                    <field name="name" string="Routing" filter_domain="['|',('name','ilike',self),('code','ilike',self)]"/>
+                    <filter string="Archived" name="inactive" domain="[('active','=',False)]"/>
+                    <field name="location_id"/>
+                    <field name="company_id" groups="base.group_multi_company"/>
+                    <group expand="0" string="Group By...">
+                        <filter string="Production Location" domain="[]" context="{'group_by':'location_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        <record id="mrp_routing_action1" model="ir.actions.act_window">
+            <field name="name">Process Master</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">mrp.routing</field>
+            <field name="view_type">form</field>
+            <field name="view_id" ref="mrp_routing_tree_view1"/>
+            <field name="search_view_id" ref="mrp_routing_search_view1"/>
+
+        </record>
+
+        <record model="ir.actions.act_window.view" id="mrp_process_master_tree1">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="mrp_routing_tree_view1"/>
+            <field name="act_window_id" ref="mrp_routing_action1"/>
+        </record>
+        <record model="ir.actions.act_window.view" id="mrp_process_master_form1">
+            <field name="sequence" eval="2"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="mrp_routing_form_view1"/>
+            <field name="act_window_id" ref="mrp_routing_action1"/>
+        </record>
+        <menuitem id="menu_mrp_routing_action"
+          action="mrp_routing_action"
+          parent="menu_mrp_bom"
+          groups="group_mrp_routings"
+          sequence="50"/>
+        <!--ravi start-->
+<!--        <menuitem id="menu_mrp_routing_action1"-->
+<!--          name="Process Master"-->
+<!--          action="mrp_routing_action1"-->
+<!--          parent="menu_mrp_bom"-->
+<!--          sequence="55"/>-->
+        <!--ravi end-->
+    </data>
+</odoo>

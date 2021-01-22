@@ -1,0 +1,1 @@
+from . import product_template_lot_sequence_generator
